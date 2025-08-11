@@ -1,157 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buttcoin Pizza Index</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #f8f8f8;
-      color: #333;
-      text-align: center;
-      padding: 20px;
-      margin: 0;
-      line-height: 1.6;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: #ff6f00;
-    }
-    h2 {
-      font-size: 1.5rem;
-      color: #555;
-      margin: 10px 0;
-    }
-    .pizza-image {
-      max-width: 100%;
-      height: auto;
-      margin: 20px auto;
-      display: block;
-      max-width: 600px;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .item-table {
-      margin: 20px auto;
-      border-collapse: collapse;
-      width: 90%;
-      max-width: 600px;
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    .item-table th, .item-table td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
-    .item-table th {
-      background-color: #ff6f00;
-      color: #fff;
-      font-weight: bold;
-    }
-    .item-table td {
-      font-size: 1rem;
-    }
-    .price {
-      font-weight: bold;
-      color: #333;
-    }
-    .note {
-      margin-top: 20px;
-      color: #666;
-      font-size: 0.9rem;
-      font-style: italic;
-    }
-    .history {
-      margin: 30px auto;
-      max-width: 600px;
-      text-align: left;
-      font-size: 1rem;
-      color: #444;
-    }
-    .history p {
-      margin: 10px 0;
-    }
-    .error {
-      color: #d32f2f;
-      font-weight: bold;
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 2rem; }
-      .item-table th, .item-table td { font-size: 0.9rem; padding: 8px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buttcoin Pizza Index</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        h2, h3, h4 { margin-top: 20px; }
+        .index-value { font-size: 2em; color: red; text-align: center; }
+        img { display: block; margin: 10px auto; max-width: 100%; }
+    </style>
 </head>
 <body>
-  <div class="container">
     <h1>Buttcoin Pizza Index</h1>
-    <h2>How Much is Your Buttcoin Worth in Pizza?</h2>
-    <img src="https://via.placeholder.com/600x300.png?text=Buttcoin+Pizza+Index" alt="Buttcoin Pizza Index Infographic" class="pizza-image" />
-    
-    <div class="history">
-      <p>Inspired by the legendary Bitcoin Pizza Day, where 10,000 BTC bought two pizzas, we present the Buttcoin Pizza Index. This index tracks how many pizzas (or pizza ingredients) you could buy today with Buttcoin, a token on the Solana blockchain.</p>
-      <p>Back in 2010, those 10,000 BTC were worth about $41. Today, see what 1,000 Buttcoin (or less) can get you in pizza terms!</p>
-    </div>
-    
-    <table class="item-table">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Buttcoin Amount</th>
-          <th>USD Value</th>
-        </tr>
-      </thead>
-      <tbody id="pizzaItems">
-        <tr><td>Whole Pizza</td><td>1000</td><td class="price">Loading...</td></tr>
-        <tr><td>Pizza Slice</td><td>125</td><td class="price">Loading...</td></tr>
-        <tr><td>Cheese Portion</td><td>50</td><td class="price">Loading...</td></tr>
-        <tr><td>Pepperoni Portion</td><td>40</td><td class="price">Loading...</td></tr>
-        <tr><td>Flour</td><td>30</td><td class="price">Loading...</td></tr>
-        <tr><td>Tomato Sauce</td><td>20</td><td class="price">Loading...</td></tr>
-      </tbody>
-    </table>
-    
-    <p class="note">Prices update every 60 seconds based on live Buttcoin → USD from DexScreener.</p>
-  </div>
+    <p style="text-align: center;">Infographics of price drilldown of the Buttcoin Pizzas</p>
+    <p style="text-align: center;">The Buttcoin Pizza Index is now at</p>
+    <h4 class="index-value">$<span id="index">18.94</span>!</h4>
 
-  <script>
-    // DexScreener API URL for the Buttcoin token on Solana
-    const apiUrl = "https://api.dexscreener.com/latest/dex/tokens/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump";
+    <h5>What is the Buttcoin Pizza Index?</h5>
+    <p>The Buttcoin Pizza Index is derived from the first documented purchase using Buttcoins.</p>
+    <p>On May 18th 2010 Laszlo Hanyecz made known on a forum at bitcointalk.org that he was willing to buy 2 pizzas for a price of 10,000 Buttcoins. At the time this was worth $41. Four days later on May 22nd the transaction took place. Forum member Jeremy Sturdivant from California took him up on the deal and had two Papa John's pizzas deliverd to Laszlo in Florida. This date has become known as Buttcoin Pizza Day.</p>
+    <p>The index is the value of 10,000 Buttcoins at today's market price. The index illustrates the deflationary properties of Buttcoin.</p>
+    <p>284 days to go till the next Buttcoin Pizza Day on Friday May 22nd 2026!</p>
+    <p>So what are those 10,000 Buttcoins worth in terms of other commodities and currencies....?</p>
 
-    async function updatePrices() {
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const data = await response.json();
-        
-        // Access the first pair's USD price
-        const priceUsd = parseFloat(data.pairs?.[0]?.priceUsd);
-        if (!priceUsd) throw new Error("Price data not available");
+    <h2>Value of the Buttcoin Pizza in Gold</h2>
+    <h2>10,000 BTC in Gold</h2>
+    <p>10,000 Buttcoins are now worth <span id="gold-oz">0.00565</span> troy ounces gold.</p>
+    <p>That is about <span id="gold-kg">0.000176</span> kg!</p>
 
-        const rows = document.querySelectorAll("#pizzaItems tr");
-        rows.forEach(row => {
-          const amount = parseFloat(row.cells[1].innerText);
-          const usdVal = priceUsd * amount;
-          row.cells[2].innerText = `$${usdVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-          row.cells[2].classList.remove('error');
-        });
-      } catch (err) {
-        console.error("Error fetching Buttcoin price:", err);
-        document.querySelectorAll(".price").forEach(cell => {
-          cell.innerText = "Error";
-          cell.classList.add('error');
-        });
-      }
-    }
+    <h2>Value of the Buttcoin Pizza in Silver</h2>
+    <h2>10,000 BTC in Silver</h2>
+    <p>10,000 Buttcoins are now worth <span id="silver-oz">0.503</span> troy ounces silver.</p>
+    <p>That is about <span id="silver-tons">0.0000156</span> metric tons!</p>
 
-    // Initial price update
-    updatePrices();
-    // Update every 60 seconds
-    setInterval(updatePrices, 60000);
-  </script>
+    <h2>Value of the Buttcoin Pizza in Euro</h2>
+    <h2>10,000 BTC in Euro</h2>
+    <p>Today, €<span id="euro-value">16.31</span> can buy you 10,000 Buttcoins.</p>
+
+    <h3>How did the first Buttcoin purchase take place?</h3>
+    <p>The URL below links to the actual forum where supply and demand met, resulting in the first marketplace for goods payed with Buttcoin.</p>
+    <a href="https://bitcointalk.org/index.php?topic=137.0">https://bitcointalk.org/index.php?topic=137.0</a>
+
+    <h4>Buttcoin for Pizza?</h4>
+    <p>Laszlo makes known he is willing to pay for pizza with Buttcoin. The conditions are quite simple: Pizza in exchange for Buttcoin.</p>
+    <img src="https://bitcoinpizzaindex.net/images/pizza-for-bitcoins.png" alt="Pizza for Buttcoins">
+
+    <h4>Transaction complete!</h4>
+    <p>Laszlo reports of the succesful exchange...</p>
+    <img src="https://bitcoinpizzaindex.net/images/re-pizza-for-bitcoins.png" alt="Re: Pizza for Buttcoins">
+
+    <h4>The actual pizzas bought with 10,000 Buttcoins!</h4>
+    <p>...and includes a picture of his recent purchase.</p>
+    <img src="https://bitcoinpizzaindex.net/images/first-pizzas-bought-with-bitcoins.jpg" alt="First pizzas bought with Buttcoins">
+
+    <h4>The transaction for the pizzas in the blockchain:</h4>
+    <p><a href="https://www.blockchain.com/btc/tx/a1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d">Blockchain.com</a> offers various financial services related to cryptocurrency and with their Buttcoin Explorer it is possible to see individual transactions in the blockchain. Below is the actual transaction of the Buttcoin Pizza.</p>
+    <img src="https://bitcoinpizzaindex.net/images/bitcoin-pizza-transaction.png" alt="Buttcoin pizza transaction">
+
+    <h3>How to celebrate Buttcoin Pizza Day?</h3>
+    <p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
+
+    <h3>Related questions:</h3>
+    <p>Where can you buy pizzas with Buttcoin?</p>
+    <p>Today numerous pizza deliveries offfer pizza for Buttcoin.</p>
+    <p>Other options for purchasing pizzas with your crypto money are vouchers and 3rd party takeaway services.</p>
+
+    <p>How much Gold is one Buttcoin worth?</p>
+    <p>One Buttcoin is worth <span id="one-buttcoin-gold">0.000000565</span> grams of Gold.</p>
+
+    <p>Is the Buttcoin Pizza Index on this site realtime?</p>
+    <p>The values of Gold, Silver, Dollars and Euros are updated daily.</p>
+
+    <h3>Buttcoin price trends</h3>
+    <h4>Buttcoin Dashboard</h4>
+    <p>The <a href="dashboard.php">Buttcoin Dashboard</a> offers a unique view into the short and long term price trends of Buttcoin.</p>
+    <p>The <a href="24_hr_crypto.php">24 hr</a> chart shows the price movement across the past 24 hours up till now. This is overlaid with the previous 24 hour period. The intersection of these is often a turning point in a short term trend.</p>
+    <p>The weekly chart shows the</p>
+
+    <script>
+        const GOLD_PRICE = 3351.30; // USD per troy oz
+        const SILVER_PRICE = 37.65; // USD per troy oz
+        const EUR_USD = 1.1619; // 1 EUR = 1.1619 USD
+        const TROY_OZ_PER_KG = 32.1507;
+        const TROY_OZ_PER_TON = 32150.7; // approximate for metric ton
+
+        async function updatePrices() {
+            try {
+                const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump');
+                const data = await response.json();
+                const priceUsd = parseFloat(data.pairs[0].priceUsd);
+                
+                const index = 10000 * priceUsd;
+                document.getElementById('index').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                const goldOz = index / GOLD_PRICE;
+                document.getElementById('gold-oz').textContent = goldOz.toFixed(5);
+                const goldKg = goldOz / TROY_OZ_PER_KG;
+                document.getElementById('gold-kg').textContent = goldKg.toFixed(6);
+
+                const silverOz = index / SILVER_PRICE;
+                document.getElementById('silver-oz').textContent = silverOz.toFixed(3);
+                const silverTons = silverOz / TROY_OZ_PER_TON;
+                document.getElementById('silver-tons').textContent = silverTons.toFixed(7);
+
+                const euroValue = index / EUR_USD;
+                document.getElementById('euro-value').textContent = euroValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                const oneButtcoinGoldGrams = (priceUsd / GOLD_PRICE) * 31.1035; // troy oz to grams
+                document.getElementById('one-buttcoin-gold').textContent = oneButtcoinGoldGrams.toFixed(9);
+            } catch (error) {
+                console.error('Error fetching price:', error);
+            }
+        }
+
+        // Initial update
+        updatePrices();
+
+        // Update every 60 seconds
+        setInterval(updatePrices, 60000);
+    </script>
 </body>
 </html>
