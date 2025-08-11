@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buttcoin Pizza Index</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding-top: 60px; }
+    h1 { font-size: 2.5rem; }
+    p { font-size: 1.2rem; }
+    #value { font-size: 2rem; margin-top: 20px; font-weight: bold; }
+    #error { color: red; margin-top: 15px; }
+    footer { margin-top: 40px; font-size: 0.9rem; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Buttcoin Pizza Index</h1>
+  <p>Value of <strong>10,000</strong> Buttcoins:</p>
+  <p id="value">Loading...</p>
+  <p id="error"></p>
+  <footer>Powered by DexScreener • Updates every minute</footer>
+
+  <script>
+    const buttcoinAmount = 10000;
+    const apiUrl = "https://api.dexscreener.com/tokens/v1/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump";
+
+    async function updateValue() {
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        console.log("DexScreener API Data:", data);
+
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error("No token data found");
+        }
+
+        const priceUsd = parseFloat(data[0]?.priceUsd || 0);
+        if (!priceUsd) throw new Error("Price not found in API response");
+
+        const totalValue = priceUsd * buttcoinAmount;
+        document.getElementById("value").textContent =
+          "$" + totalValue.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+        document.getElementById("error").textContent = "";
+      } catch (err) {
+        console.error("Error fetching price:", err);
+        document.getElementById("error").textContent =
+          "Error fetching price — see console for details.";
+      }
+    }
+
+    updateValue();
+    setInterval(updateValue, 60000);
+  </script>
+</body>
+</html>
+
