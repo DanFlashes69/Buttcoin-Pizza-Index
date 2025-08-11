@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buttcoin Pizza Index</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fff; color: #333; text-align: center; padding: 20px; }
+    h1 { font-size: 2.5rem; margin-bottom: 10px; }
+    .pizza-image { max-width: 100%; height: auto; margin: 20px 0; }
+    .item-table { margin: 0 auto; border-collapse: collapse; width: 90%; max-width: 600px; }
+    .item-table th, .item-table td { padding: 8px; border: 1px solid #ddd; }
+    .item-table th { background-color: #f4f4f4; font-weight: bold; }
+    .price { font-weight: bold; }
+    .note { margin-top: 15px; color: #666; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Buttcoin Pizza Index</h1>
+  <img src="https://thechainsaw.com/finance/bitcoin-pizza-index-tastiest-most-straightforward-way-to-track-bitcoin-price/attachment/bitcoin-pizza-index-graphic/" alt="Pizza Index Infographic" class="pizza-image"/>
+  
+  <table class="item-table">
+    <thead>
+      <tr><th>Item</th><th>Buttcoin Amount</th><th>USD Value</th></tr>
+    </thead>
+    <tbody id="pizzaItems">
+      <tr><td>Whole Pizza</td><td>1000</td><td class="price">Loading...</td></tr>
+      <tr><td>Pizza Slice</td><td>125</td><td class="price">Loading...</td></tr>
+      <tr><td>Cheese Portion</td><td>50</td><td class="price">Loading...</td></tr>
+      <tr><td>Pepperoni Portion</td><td>40</td><td class="price">Loading...</td></tr>
+      <tr><td>Flour</td><td>30</td><td class="price">Loading...</td></tr>
+      <tr><td>Tomato Sauce</td><td>20</td><td class="price">Loading...</td></tr>
+    </tbody>
+  </table>
+  
+  <p class="note">Prices update every 60 seconds based on live Buttcoin → USD from DexScreener.</p>
+
+  <script>
+    const apiUrl = "https://api.dexscreener.com/tokens/v1/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump";
+    function updatePrices() {
+      fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => {
+          const priceUsd = parseFloat(data[0]?.priceUsd);
+          const rows = document.querySelectorAll("#pizzaItems tr");
+          rows.forEach(row => {
+            const amount = parseFloat(row.cells[1].innerText);
+            const usdVal = priceUsd * amount;
+            row.cells[2].innerText = `$${usdVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          document.querySelectorAll(".price").forEach(cell => cell.innerText = "Error");
+        });
+    }
+    updatePrices();
+    setInterval(updatePrices, 60000);
+  </script>
+</body>
+</html>
 
