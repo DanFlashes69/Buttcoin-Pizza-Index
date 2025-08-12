@@ -70,59 +70,85 @@
     <h4>Buttcoin Dashboard</h4>
 
     <script>
-        const METAL_API_KEY = ''; 
-        const TROY_OZ_PER_KG = 32.1507;
-        const TROY_OZ_PER_TON = 32150.7;
+    const TROY_OZ_PER_KG = 32.1507;
+    const TROY_OZ_PER_TON = 32150.7;
+    const COINGECKO_GOLD_ID = 'gold';
+    const COINGECKO_SILVER_ID = 'silver';
 
-        async function updatePrices() {
-            let GOLD_PRICE = 3351.30;
-            let SILVER_PRICE = 37.65;
+    async function fetchDexscreenerPrice() {
+        try {
+            const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump');
+            const data = await response.json();
+            const priceUsd = parseFloat(data.pairs[0].priceUsd);
+            return priceUsd;
+        } catch (error) {
+            console.error('Error fetching Dexscreener price:', error);
+            return null;
+        }
+    }
 
-            if (METAL_API_KEY) {
-                try {
-                    const metalResponse = await fetch(`https://api.metalpriceapi.com/v1/latest?api_key=${METAL_API_KEY}&base=USD&currencies=XAU,XAG`);
-                    const metalData = await metalResponse.json();
-                    if (metalData.success) {
-                        GOLD_PRICE = 1 / metalData.rates.XAU;
-                        SILVER_PRICE = 1 / metalData.rates.XAG;
-                    }
-                } catch (error) {
-                    console.error('Error fetching metal prices:', error);
-                }
-            }
+    async function fetchCoingeckoMetalPrices() {
+        try {
+            // Coingecko returns gold/silver price in USD per ounce
+            const url = 'https://api.coingecko.com/api/v3/simple/price?ids=gold,silver&vs_currencies=usd';
+            const response = await fetch(url);
+            const data = await response.json();
+            const goldPrice = data.gold.usd;    // 1 troy oz in USD
+            const silverPrice = data.silver.usd;
+            return { gold: goldPrice, silver: silverPrice };
+        } catch (error) {
+            console.error('Error fetching CoinGecko metals:', error);
+            // Return some sensible fallback
+            return { gold: 3351.30, silver: 37.65 };
+        }
+    }
 
-            try {
-                const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump');
-                const data = await response.json();
-                const priceUsd = parseFloat(data.pairs[0].priceUsd);
+    async function updatePrices() {
+        // Show loading
+        document.getElementById('index').textContent = '...';
+        document.getElementById('gold-oz').textContent = '...';
+        document.getElementById('gold-kg').textContent = '...';
+        document.getElementById('silver-oz').textContent = '...';
+        document.getElementById('silver-tons').textContent = '...';
+        document.getElementById('usd-value').textContent = '...';
+        document.getElementById('one-buttcoin-gold').textContent = '...';
 
-                const index = 10000 * priceUsd;
+        const [priceUsd, metals] = await Promise.all([
+            fetchDexscreenerPrice(),
+            fetchCoingeckoMetalPrices()
+        ]);
 
-                document.getElementById('index').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-                const goldOz = index / GOLD_PRICE;
-                document.getElementById('gold-oz').textContent = goldOz.toFixed(5);
-
-                const goldKg = goldOz / TROY_OZ_PER_KG;
-                document.getElementById('gold-kg').textContent = goldKg.toFixed(6);
-
-                const silverOz = index / SILVER_PRICE;
-                document.getElementById('silver-oz').textContent = silverOz.toFixed(3);
-
-                const silverTons = silverOz / TROY_OZ_PER_TON;
-                document.getElementById('silver-tons').textContent = silverTons.toFixed(7);
-
-                document.getElementById('usd-value').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-                const oneButtcoinGoldGrams = (priceUsd / GOLD_PRICE) * 31.1035;
-                document.getElementById('one-buttcoin-gold').textContent = oneButtcoinGoldGrams.toFixed(9);
-            } catch (error) {
-                console.error('Error fetching Buttcoin price:', error);
-            }
+        if (priceUsd === null) {
+            document.getElementById('index').textContent = 'Error';
+            return;
         }
 
-        updatePrices();
-        setInterval(updatePrices, 60000);
-    </script>
-</body>
-</html>
+        const index = 10000 * priceUsd;
+
+        document.getElementById('index').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // Gold calculations
+        const goldOz = index / metals.gold;
+        document.getElementById('gold-oz').textContent = goldOz.toFixed(5);
+
+        const goldKg = goldOz / TROY_OZ_PER_KG;
+        document.getElementById('gold-kg').textContent = goldKg.toFixed(6);
+
+        // Silver calculations
+        const silverOz = index / metals.silver;
+        document.getElementById('silver-oz').textContent = silverOz.toFixed(3);
+
+        const silverTons = silverOz / TROY_OZ_PER_TON;
+        document.getElementById('silver-tons').textContent = silverTons.toFixed(7);
+
+        // USD value
+        document.getElementById('usd-value').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // One Buttcoin in grams of gold (1 troy oz = 31.1035g)
+        const oneButtcoinGoldGrams = (priceUsd / metals.gold) * 31.1035;
+        document.getElementById('one-buttcoin-gold').textContent = oneButtcoinGoldGrams.toFixed(9);
+    }
+
+    updatePrices();
+    setInterval(updatePrices, 60000);
+</script>
