@@ -5,84 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buttcoin Pizza Index</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
+        body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { text-align: center; }
         h2, h3, h4, h5 { margin-top: 20px; }
         .index-value { font-size: 2em; color: red; text-align: center; }
         img { display: block; margin: 10px auto; max-width: 100%; }
-        #last-updated { margin-top: 10px; font-size: 0.9em; color: gray; }
+        #last-updated { text-align: center; font-size: 0.9em; color: gray; margin-top: 5px; }
     </style>
 </head>
 <body>
     <h1>Buttcoin Pizza Index</h1>
-    <p>The Buttcoin Pizza Index is now at</p>
-    <h4 class="index-value">$<span id="index">0.00</span>!</h4>
-
-    <h2>10,000 Buttcoins in Gold</h2>
-    <p><span id="gold-oz">0.00000</span> troy ounces</p>
-    <p><span id="gold-kg">0.000000</span> kg</p>
-
-    <h2>10,000 Buttcoins in Silver</h2>
-    <p><span id="silver-oz">0.000</span> troy ounces</p>
-    <p><span id="silver-tons">0.0000000</span> metric tons</p>
-
-    <h2>10,000 Buttcoins in USD</h2>
-    <p>$<span id="usd-value">0.00</span></p>
-
-    <p>One Buttcoin in gold (grams): <span id="one-buttcoin-gold">0.000000000</span></p>
+    <p style="text-align: center;">The Buttcoin Pizza Index is now at</p>
+    <h4 class="index-value">$<span id="index">18.94</span>!</h4>
     <div id="last-updated">Last updated: --</div>
 
-    <script>
-        const TROY_OZ_PER_KG = 32.1507;
-        const TROY_OZ_PER_TON = 32150.7;
+<h2>What is the Buttcoin Pizza Index?</h2>
+<p>The Buttcoin Pizza Index is derived from the first documented purchase using Buttcoins, similar to the historic May 18th 2010 Bitcoin transaction when Laszlo Hanyecz made known on a forum at bitcointalk.org that he was willing to buy 2 pizzas for a price of 10,000 Bitcoins. At the time this was worth $41. Four days later on May 22nd the transaction took place. Forum member Jeremy Sturdivant from California took him up on the deal and had two Papa John's pizzas deliverd to Laszlo in Florida. This date has become known as Bitcoin Pizza Day. Now we have successfully established Buttcoin pizza day.</p>
+<p>The index is the value of 10,000 Buttcoins at today's market price. The index illustrates the deflationary properties of Buttcoin.</p>
+<p>284 days to go till the next Buttcoin Pizza Day on Friday May 22nd 2026!</p>
+<p>So what are those 10,000 Buttcoins worth in terms of other commodities and currencies....?</p>
 
-        async function updatePrices() {
-            let GOLD_PRICE = 3351.30; // fallback USD/oz
-            let SILVER_PRICE = 37.65; // fallback USD/oz
+<h2>Value of the Buttcoin Pizza in Gold</h2>
+<h2>10,000 Buttcoins in Gold</h2>
+<p>10,000 Buttcoins are now worth <span id="gold-oz">0.00565</span> troy ounces gold.</p>
+<p>That is about <span id="gold-kg">0.000176</span> kg!</p>
 
-            try {
-                // Free metals API (no key needed) from metals.live
-                const metalResponse = await fetch('https://api.metals.live/v1/spot');
-                const metals = await metalResponse.json();
-                const gold = metals.find(m => m.hasOwnProperty("gold"));
-                const silver = metals.find(m => m.hasOwnProperty("silver"));
-                if (gold && gold.gold) GOLD_PRICE = gold.gold;
-                if (silver && silver.silver) SILVER_PRICE = silver.silver;
-            } catch (err) {
-                console.warn("Gold/Silver price fetch failed, using fallback:", err);
-            }
+<h2>Value of the Buttcoin Pizza in Silver</h2>
+<h2>10,000 Buttcoins in Silver</h2>
+<p>10,000 Buttcoins are now worth <span id="silver-oz">0.503</span> troy ounces silver.</p>
+<p>That is about <span id="silver-tons">0.0000156</span> metric tons!</p>
 
-            try {
-                const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump');
-                const data = await response.json();
-                const priceUsd = parseFloat(data.pairs[0].priceUsd);
-                
-                const index = 10000 * priceUsd;
-                document.getElementById('index').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+<h2>Value of the Buttcoin Pizza in USD</h2>
+<h2>10,000 Buttcoins in USD</h2>
+<p>Today, $<span id="usd-value">18.94</span> can buy you 10,000 Buttcoins.</p>
 
-                const goldOz = index / GOLD_PRICE;
-                document.getElementById('gold-oz').textContent = goldOz.toFixed(5);
-                document.getElementById('gold-kg').textContent = (goldOz / TROY_OZ_PER_KG).toFixed(6);
+<p>One Buttcoin in gold (grams): <span id="one-buttcoin-gold">0.000000000</span></p>
 
-                const silverOz = index / SILVER_PRICE;
-                document.getElementById('silver-oz').textContent = silverOz.toFixed(3);
-                document.getElementById('silver-tons').textContent = (silverOz / TROY_OZ_PER_TON).toFixed(7);
+<h3>How did the first Buttcoin purchase take place?</h3>
+<p>The images below highlights the actual interaction where supply and demand met, resulting in the first pizza transaction payed with Buttcoin.</p>
 
-                document.getElementById('usd-value').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+<h4>Buttcoin for Pizza?</h4>
+<p>Dan makes known he is willing to pay for pizza with Buttcoin. The conditions are quite simple: Pizza in exchange for Buttcoin.</p>
 
-                const oneButtcoinGoldGrams = (priceUsd / GOLD_PRICE) * 31.1035;
-                document.getElementById('one-buttcoin-gold').textContent = oneButtcoinGoldGrams.toFixed(9);
+<h4>Transaction complete!</h4>
+<p>Dan reports of the succesful exchange...</p>
 
-                // Last updated timestamp
-                const now = new Date();
-                document.getElementById('last-updated').textContent = `Last updated: ${now.toLocaleTimeString()}`;
-            } catch (err) {
-                console.error("Buttcoin price fetch failed:", err);
-            }
+<h4>The actual pizzas bought with 10,000 Buttcoins!</h4>
+<p>...and includes a picture of his recent purchase.</p>
+
+<h4>The transaction for the pizzas in the blockchain:</h4>
+
+<h3>How to celebrate Buttcoin Pizza Day?</h3>
+<p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
+
+<h3>Related questions:</h3>
+<p>Q: Where can I buy Buttcoin?</p>
+<p>A: You can buy Buttcoin on through various avenues including: Phantom Wallet, Moonshot, MEXC, LBank, Poloniex and more.    
+
+    
+<p>Q: Where can you buy pizzas with Buttcoin?</p>
+<p>A: Today numerous pizza deliveries offfer pizza for Buttcoin you need only ask!</p>
+
+    
+<p>Q: Is the Buttcoin Pizza Index on this site realtime?</p>
+<p>A: The Buttcoin Pizza Index, as well as the values of Gold, Silver and Dollars are updated in real-time.</p>
+
+    
+<h3>Buttcoin price trends</h3>
+<h4>Buttcoin Dashboard</h4>
+
+<script>
+    const TROY_OZ_PER_KG = 32.1507;
+    const TROY_OZ_PER_TON = 32150.7;
+
+    async function updatePrices() {
+        let GOLD_PRICE = 3351.30; // fallback USD/oz
+        let SILVER_PRICE = 37.65; // fallback USD/oz
+
+        try {
+            const metalResponse = await fetch('https://api.metals.live/v1/spot');
+            const metals = await metalResponse.json();
+            const gold = metals.find(m => m.hasOwnProperty("gold"));
+            const silver = metals.find(m => m.hasOwnProperty("silver"));
+            if (gold && gold.gold) GOLD_PRICE = gold.gold;
+            if (silver && silver.silver) SILVER_PRICE = silver.silver;
+        } catch (err) {
+            console.warn("Gold/Silver price fetch failed, using fallback:", err);
         }
 
-        updatePrices();
-        setInterval(updatePrices, 60000);
-    </script>
+        try {
+            const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump');
+            const data = await response.json();
+            const priceUsd = parseFloat(data.pairs[0].priceUsd);
+            
+            const index = 10000 * priceUsd;
+            document.getElementById('index').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const goldOz = index / GOLD_PRICE;
+            document.getElementById('gold-oz').textContent = goldOz.toFixed(5);
+            document.getElementById('gold-kg').textContent = (goldOz / TROY_OZ_PER_KG).toFixed(6);
+
+            const silverOz = index / SILVER_PRICE;
+            document.getElementById('silver-oz').textContent = silverOz.toFixed(3);
+            document.getElementById('silver-tons').textContent = (silverOz / TROY_OZ_PER_TON).toFixed(7);
+
+            document.getElementById('usd-value').textContent = index.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const oneButtcoinGoldGrams = (priceUsd / GOLD_PRICE) * 31.1035;
+            document.getElementById('one-buttcoin-gold').textContent = oneButtcoinGoldGrams.toFixed(9);
+
+            document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+        } catch (err) {
+            console.error("Buttcoin price fetch failed:", err);
+        }
+    }
+
+    updatePrices();
+    setInterval(updatePrices, 60000);
+</script>
 </body>
 </html>
