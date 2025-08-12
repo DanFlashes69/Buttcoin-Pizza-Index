@@ -74,68 +74,64 @@
 <h3>Buttcoin price trends</h3>
 <h4>Buttcoin Dashboard</h4>
 
+<div>
+    <h2>The Buttcoin Pizza Index is now at: <span id="index" style="color:red"></span></h2>
+    <p>10,000 Buttcoin in USD: $<span id="usd-value"></span></p>
+    <p>10,000 Buttcoin in Gold: <span id="gold-oz"></span> oz</p>
+    <p>10,000 Buttcoin in Silver: <span id="silver-oz"></span> oz</p>
+</div>
+
 <script>
-    const TROY_OZ_PER_KG = 32.1507;
-    const TROY_OZ_PER_TON = 32150.7;
+const BUTTCOIN_PAIR_URL = "https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump";
+const METALS_URL = "https://api.metals.live/v1/spot";
+const TROY_OZ_PER_KG = 32.1507;
+const TROY_OZ_PER_TON = 32150.7;
 
-    function safeSetText(id, text) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = text;
+// Fetch JSON with CORS bypass using allorigins
+async function fetchJSON(url) {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}&t=${Date.now()}`;
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+    return res.json();
+}
+
+async function updateValues() {
+    try {
+        // 1. Get Buttcoin price from Dexscreener
+        const buttData = await fetchJSON(BUTTCOIN_PAIR_URL);
+        const priceUsd = Number(buttData?.pairs?.[0]?.priceUsd);
+        if (!isFinite(priceUsd)) throw new Error("Invalid Buttcoin price");
+
+        // 2. Get Gold and Silver prices
+        let goldPrice = 0, silverPrice = 0;
+        const metalsData = await fetchJSON(METALS_URL);
+        const goldObj = metalsData.find(o => o.gold);
+        const silverObj = metalsData.find(o => o.silver);
+        if (goldObj?.gold) goldPrice = goldObj.gold;
+        if (silverObj?.silver) silverPrice = silverObj.silver;
+
+        if (!goldPrice || !silverPrice) throw new Error("Invalid metals data");
+
+        // 3. Calculate index value in USD
+        const indexValue = 10000 * priceUsd;
+
+        // 4. Gold & Silver equivalents
+        const goldOz = indexValue / goldPrice;
+        const silverOz = indexValue / silverPrice;
+
+        // 5. Update HTML
+        document.getElementById("index").textContent = `$${indexValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+        document.getElementById("usd-value").textContent = indexValue.toLocaleString('en-US', { minimumFractionDigits: 2 });
+        document.getElementById("gold-oz").textContent = goldOz.toFixed(5);
+        document.getElementById("silver-oz").textContent = silverOz.toFixed(3);
+
+        console.log("Updated at", new Date().toLocaleTimeString());
+    } catch (err) {
+        console.error("Update failed:", err);
     }
+}
 
-    async function fetchMetals() {
-        // fallback prices
-        let gold = 3351.30;
-        let silver = 37.65;
-
-        try {
-            const res = await fetch('https://api.metals.live/v1/spot');
-            if (res.ok) {
-                const data = await res.json();
-                const g = data.find(o => o && typeof o.gold === 'number');
-                const s = data.find(o => o && typeof o.silver === 'number');
-                if (g && g.gold) gold = g.gold;
-                if (s && s.silver) silver = s.silver;
-            }
-        } catch (err) {
-            console.warn('Metals API failed, using fallback prices:', err);
-        }
-
-        return { gold, silver };
-    }
-
-    async function updateValues() {
-        try {
-            // Get live metals prices
-            const { gold: goldPrice, silver: silverPrice } = await fetchMetals();
-
-            // Get Buttcoin price
-            const res = await fetch('https://api.dexscreener.com/latest/dex/pairs/solana/FasH397CeZLNYWkd3wWK9vrmjd1z93n3b59DssRXpump');
-            if (!res.ok) throw new Error('Dexscreener API error');
-            const data = await res.json();
-            const priceUsd = Number(data?.pairs?.[0]?.priceUsd);
-            if (!isFinite(priceUsd)) throw new Error('Invalid price data');
-
-            // Calculate index (value of 10,000 Buttcoin in USD)
-            const indexValue = 10000 * priceUsd;
-            safeSetText('index', indexValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-            safeSetText('usd-value', indexValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-
-            // Gold equivalents
-            const goldOz = indexValue / goldPrice;
-            safeSetText('gold-oz', goldOz.toFixed(5));
-            safeSetText('gold-kg', (goldOz / TROY_OZ_PER_KG).toFixed(6));
-
-            // Silver equivalents
-            const silverOz = indexValue / silverPrice;
-            safeSetText('silver-oz', silverOz.toFixed(3));
-            safeSetText('silver-tons', (silverOz / TROY_OZ_PER_TON).toFixed(7));
-
-        } catch (err) {
-            console.error('Failed to update values:', err);
-        }
-    }
-
-    updateValues(); // run on load
-    setInterval(updateValues, 60000); // run every 60 seconds
+// Initial run + update every 60 sec
+updateValues();
+setInterval(updateValues, 60000);
 </script>
