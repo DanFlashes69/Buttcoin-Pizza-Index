@@ -80,7 +80,8 @@ async function updateValues() {
     const goldOunces = parseFloat(data.buttcoin_gold_oz);
     const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
-    // Update HTML elements with correctly formatted numbers
+    // Update all relevant HTML elements
+    document.getElementById("index").textContent = totalUsd.toFixed(2);      // Top index display
     document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
     document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
     document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
@@ -89,6 +90,7 @@ async function updateValues() {
     document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
   } catch (err) {
     console.error("Update failed:", err);
+    document.getElementById("index").textContent = "--";
     document.getElementById("usd-value").textContent = "--";
     document.getElementById("gold-oz").textContent = "--";
     document.getElementById("silver-oz").textContent = "--";
