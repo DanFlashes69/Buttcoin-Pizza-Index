@@ -76,14 +76,14 @@ async function updateValues() {
   try {
     const data = await fetchJSON(WORKER_URL);
 
-    // Update HTML elements
     const totalUsd = parseFloat(data.buttcoin_usd);
     const goldOunces = parseFloat(data.buttcoin_gold_oz);
     const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
+    // Update HTML elements with correctly formatted numbers
     document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
     document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
-    document.getElementById("silver-oz").textContent = silverOunces.toFixed(3);
+    document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
 
     const now = new Date();
     document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
