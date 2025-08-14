@@ -8,10 +8,11 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f7931a; /* Bitcoin orange */
+      background-color: #f7931a; /* bitcoin orange */
       padding-top: 60px;
     }
 
+    /* HEADER STYLING */
     .header {
       position: fixed;
       top: 0;
@@ -37,13 +38,14 @@
       color: #ffcc00;
     }
 
+    /* CONTENT CONTAINER */
     .container {
       max-width: 900px;
       margin: 30px auto;
       background: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
       text-align: center;
     }
 
@@ -58,17 +60,11 @@
 
     #last-updated { font-size: 0.9em; color: gray; margin-top: 5px; }
 
-    .price-text { font-weight: bold; font-size: 1.3em; color: red; }
-    .movement-arrow {
-      margin-left: 5px;
-      font-size: 1.1em;
-      border-radius: 4px;
-      transition: color 0.3s ease;
-    }
-
+    .price { font-weight: bold; color: red; }
     p { line-height: 1.6; color: #333; }
     strong { color: #000; }
 
+    /* Pricing Cards */
     .pricing-cards {
       display: flex;
       justify-content: space-around;
@@ -83,19 +79,36 @@
       max-width: 250px;
       background: white;
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       text-align: center;
       padding: 20px;
     }
 
     .card img {
-      width: 120px;
+      width: 120px; /* 50% larger */
       height: 120px;
       margin-bottom: 10px;
     }
+
+    .card .price-text {
+      font-weight: bold;
+      font-size: 1.3em;
+      color: red;
+    }
+
+    .movement-arrow {
+      margin-left: 5px;
+      font-size: 1.1em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    a img { cursor: pointer; } /* clickable images */
   </style>
 </head>
 <body>
+  <!-- HEADER LINKS -->
   <div class="header">
     <a href="https://linktr.ee/ButtcoinTNB" target="_blank" rel="noopener noreferrer">Linktree</a>
     <a href="https://x.com/ButtcoinTNB" target="_blank" rel="noopener noreferrer">Twitter/X</a>
@@ -103,19 +116,20 @@
     <a href="https://domchart.onrender.com/" target="_blank" rel="noopener noreferrer">DOM Chart</a>
   </div>
 
+  <!-- MAIN CONTENT -->
   <div class="container">
     <h1>Buttcoin Pizza Index</h1>
     <p>The Buttcoin Pizza Index is now at</p>
-    <div class="index-value">
-      $<span id="index">--</span> <span id="index-arrow" class="movement-arrow">▲</span>
-    </div>
+    <div class="index-value">$<span id="index">--</span> <span id="index-arrow" class="movement-arrow">▲</span></div>
     <div id="last-updated">Last updated: --</div>
 
-    <p><strong id="pizza-countdown">-- days to go till the next Buttcoin Pizza Day!</strong></p>
-
     <h2>What is the Buttcoin Pizza Index?</h2>
-    <p>The Buttcoin Pizza Index is derived from the first documented purchase using Buttcoins...</p>
+    <p>The Buttcoin Pizza Index is derived from the first documented purchase using Buttcoins, similar to the historic May 18th 2010 Bitcoin transaction when Laszlo Hanyecz made known on a forum at bitcointalk.org that he was willing to buy 2 pizzas for a price of 10,000 Bitcoins. At the time this was worth $41. Four days later on May 22nd the transaction took place. Forum member Jeremy Sturdivant from California took him up on the deal and had two Papa John's pizzas delivered to Laszlo in Florida. This date has become known as Bitcoin Pizza Day. Now we have successfully established Buttcoin pizza day.</p>
+    <p>The index is the value of 10,000 Buttcoins at today's market price. The index illustrates the deflationary properties of Buttcoin.</p>
+    <p><strong id="pizza-countdown">-- days to go until the next Buttcoin Pizza Day!</strong></p>
+    <p>So what are those 10,000 Buttcoins worth in terms of other commodities and currencies....?</p>
 
+    <!-- PRICING SECTION -->
     <h2>Value of the Buttcoin Pizza in Other Assets</h2>
     <div class="pricing-cards">
       <div class="card">
@@ -135,20 +149,42 @@
       </div>
     </div>
 
+    <h3>How did the first Buttcoin purchase take place?</h3>
+    <p>The images below highlight the actual interaction where supply and demand met, resulting in the first pizza transaction paid with Buttcoin.</p>
+
     <h4>Buttcoin for Pizza?</h4>
-    <p>Dan makes known he is willing to pay for pizza with Buttcoin...</p>
-    <a href="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/pizzaforbuttcoin.png" target="_blank">
+    <p>Dan makes known he is willing to pay for pizza with Buttcoin. The conditions are quite simple: Pizza in exchange for Buttcoin.</p>
+    <a href="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/pizzaforbuttcoin.png" target="_blank" rel="noopener noreferrer">
       <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/pizzaforbuttcoin.png" alt="Pizza for Buttcoin">
     </a>
 
     <h4>Transaction complete!</h4>
-    <p>Dan reports of the successful exchange...</p>
+    <p>Dan reports of the successful exchange on Twitter/X as a result of being banned on the BitcoinTalk forum.</p>
+
+    <h4>The actual pizzas bought with 10,000 Buttcoins!</h4>
+    <p>...and includes a picture of his recent purchase.</p>
+
+    <h4>The transaction for the pizzas in the blockchain:</h4>
+
+    <h3>How to celebrate Buttcoin Pizza Day?</h3>
+    <p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using Buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
+
+    <h3>Related questions:</h3>
+    <p><strong>Q: Where can I buy Buttcoin?</strong><br>
+       A: You can buy Buttcoin through various avenues including: Phantom Wallet, Moonshot, MEXC, LBank, Poloniex and more.</p>
+
+    <p><strong>Q: Where can you buy pizzas with Buttcoin?</strong><br>
+       A: Today numerous pizza deliveries offer pizza for Buttcoin; you need only ask!</p>
+
+    <p><strong>Q: Is the Buttcoin Pizza Index on this site realtime?</strong><br>
+       A: The Buttcoin Pizza Index, as well as the values of Gold, Silver and Dollars are updated in real-time.</p>
   </div>
 
+  <!-- SCRIPT FOR LIVE UPDATES -->
   <script>
     const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
 
-    let lastValues = { index: null, usd: null, gold: null, silver: null, lastUpdated: "--" };
+    let lastValues = { index: null, usd: null, gold: null, silver: null };
 
     async function fetchJSON(url) {
       const res = await fetch(url, { cache: "no-store" });
@@ -157,10 +193,8 @@
     }
 
     function getArrow(newVal, oldVal) {
-      if (oldVal === null) return { symbol: "▲", color: "green" };
-      if (newVal > oldVal) return { symbol: "▲", color: "green" };
-      if (newVal < oldVal) return { symbol: "▼", color: "red" };
-      return { symbol: oldVal > newVal ? "▼" : "▲", color: oldVal > newVal ? "red" : "green" };
+      if (oldVal === null) return "▲";
+      return newVal > oldVal ? "▲" : "▼";
     }
 
     async function updateValues() {
@@ -170,45 +204,56 @@
         const goldOunces = parseFloat(data.buttcoin_gold_oz);
         const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
+        // Update main index
         if (!isNaN(totalUsd)) {
           document.getElementById("index").textContent = totalUsd.toFixed(2);
-          const arrowIndex = getArrow(totalUsd, lastValues.index);
-          const indexArrowEl = document.getElementById("index-arrow");
-          indexArrowEl.textContent = arrowIndex.symbol;
-          indexArrowEl.style.color = arrowIndex.color;
+          const indexArrow = getArrow(totalUsd, lastValues.index);
+          document.getElementById("index-arrow").textContent = indexArrow;
+          document.getElementById("index-arrow").style.color = indexArrow === "▲" ? "green" : "red";
           lastValues.index = totalUsd;
         }
 
+        // Update USD
+        if (!isNaN(totalUsd)) {
+          document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
+          const usdArrow = getArrow(totalUsd, lastValues.usd);
+          const usdArrowEl = document.getElementById("usd-arrow");
+          usdArrowEl.textContent = usdArrow;
+          usdArrowEl.style.color = usdArrow === "▲" ? "green" : "red";
+          lastValues.usd = totalUsd;
+        }
+
+        // Update Gold
         if (!isNaN(goldOunces)) {
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
-          const arrowGold = getArrow(goldOunces, lastValues.gold);
+          const goldArrow = getArrow(goldOunces, lastValues.gold);
           const goldArrowEl = document.getElementById("gold-arrow");
-          goldArrowEl.textContent = arrowGold.symbol;
-          goldArrowEl.style.color = arrowGold.color;
+          goldArrowEl.textContent = goldArrow;
+          goldArrowEl.style.color = goldArrow === "▲" ? "green" : "red";
           lastValues.gold = goldOunces;
         }
 
+        // Update Silver
         if (!isNaN(silverOunces)) {
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
-          const arrowSilver = getArrow(silverOunces, lastValues.silver);
+          const silverArrow = getArrow(silverOunces, lastValues.silver);
           const silverArrowEl = document.getElementById("silver-arrow");
-          silverArrowEl.textContent = arrowSilver.symbol;
-          silverArrowEl.style.color = arrowSilver.color;
+          silverArrowEl.textContent = silverArrow;
+          silverArrowEl.style.color = silverArrow === "▲" ? "green" : "red";
           lastValues.silver = silverOunces;
         }
 
         const now = new Date();
         document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
-        lastValues.lastUpdated = now.toLocaleTimeString();
       } catch (err) {
         console.error("Update failed:", err);
       }
     }
 
+    // Dynamic Pizza Day countdown
     function updateCountdown() {
       const now = new Date();
-      let nextPizzaDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      if (now >= nextPizzaDay) nextPizzaDay.setFullYear(nextPizzaDay.getFullYear() + 1);
+      let nextPizzaDay = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
       const diffTime = nextPizzaDay - now;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -218,7 +263,7 @@
     updateValues();
     updateCountdown();
     setInterval(updateValues, 60000);
-    setInterval(updateCountdown, 1000); // update countdown every second
+    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
