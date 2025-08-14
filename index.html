@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #F7931A; /* Bitcoin orange background */
+      background-color: #f7931a; /* bitcoin orange */
       padding-top: 60px;
     }
 
@@ -45,8 +45,7 @@
       background: white;
       padding: 40px;
       border-radius: 12px;
-      /* Increased shadow to stand out more against orange background */
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
       text-align: center;
     }
 
@@ -61,16 +60,9 @@
 
     #last-updated { font-size: 0.9em; color: gray; margin-top: 5px; }
 
-    .price-text { font-weight: bold; font-size: 1.3em; color: red; }
-
-    .movement-arrow {
-      margin-left: 5px;
-      font-size: 1.1em;
-      border-radius: 0; /* removed rounded background */
-      padding: 0; /* remove padding */
-      background-color: transparent; /* no shadow/background */
-      transition: color 0.3s ease;
-    }
+    .price { font-weight: bold; color: red; }
+    p { line-height: 1.6; color: #333; }
+    strong { color: #000; }
 
     /* Pricing Cards */
     .pricing-cards {
@@ -87,19 +79,32 @@
       max-width: 250px;
       background: white;
       border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       text-align: center;
       padding: 20px;
     }
 
     .card img {
-      width: 120px; /* 50% larger than original */
+      width: 120px; /* 50% larger */
       height: 120px;
       margin-bottom: 10px;
     }
 
-    p { line-height: 1.6; color: #333; }
-    strong { color: #000; }
+    .card .price-text {
+      font-weight: bold;
+      font-size: 1.3em;
+      color: red;
+    }
+
+    .movement-arrow {
+      margin-left: 5px;
+      font-size: 1.1em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    a img { cursor: pointer; } /* clickable images */
   </style>
 </head>
 <body>
@@ -149,9 +154,9 @@
 
     <h4>Buttcoin for Pizza?</h4>
     <p>Dan makes known he is willing to pay for pizza with Buttcoin. The conditions are quite simple: Pizza in exchange for Buttcoin.</p>
-
-    <!-- NEW IMAGE ADDED HERE -->
-    <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/pizzaforbuttcoin.png" alt="Pizza for Buttcoin">
+    <a href="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/pizzaforbuttcoin.png" target="_blank" rel="noopener noreferrer">
+      <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/pizzaforbuttcoin.png" alt="Pizza for Buttcoin">
+    </a>
 
     <h4>Transaction complete!</h4>
     <p>Dan reports of the successful exchange...</p>
@@ -179,7 +184,7 @@
   <script>
     const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
 
-    let lastValues = { index: null, usd: null, gold: null, silver: null, lastUpdated: "--" };
+    let lastValues = { index: null, usd: null, gold: null, silver: null };
 
     async function fetchJSON(url) {
       const res = await fetch(url, { cache: "no-store" });
@@ -187,68 +192,61 @@
       return res.json();
     }
 
-    function getArrow(newVal, oldVal, lastSymbol = "▲") {
-      if (oldVal === null) return { symbol: "▲", color: "green" };
-      if (newVal > oldVal) return { symbol: "▲", color: "green" };
-      if (newVal < oldVal) return { symbol: "▼", color: "red" };
-      return { symbol: lastSymbol, color: lastSymbol === "▲" ? "green" : "red" };
+    function getArrow(newVal, oldVal) {
+      if (oldVal === null) return "▲";
+      return newVal > oldVal ? "▲" : "▼";
     }
 
     async function updateValues() {
       try {
         const data = await fetchJSON(WORKER_URL);
-
         const totalUsd = parseFloat(data.buttcoin_usd);
         const goldOunces = parseFloat(data.buttcoin_gold_oz);
         const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
         // Update main index
         if (!isNaN(totalUsd)) {
-          const indexEl = document.getElementById("index");
-          indexEl.textContent = totalUsd.toFixed(2);
-          const arrowEl = document.getElementById("index-arrow");
-          const arrow = getArrow(totalUsd, lastValues.index, arrowEl.textContent);
-          arrowEl.textContent = arrow.symbol;
-          arrowEl.style.color = arrow.color;
+          document.getElementById("index").textContent = totalUsd.toFixed(2);
+          const indexArrow = getArrow(totalUsd, lastValues.index);
+          document.getElementById("index-arrow").textContent = indexArrow;
+          document.getElementById("index-arrow").style.color = indexArrow === "▲" ? "green" : "red";
           lastValues.index = totalUsd;
         }
 
-        // Gold
+        // Update USD
+        if (!isNaN(totalUsd)) {
+          document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
+          const usdArrow = getArrow(totalUsd, lastValues.usd);
+          const usdArrowEl = document.getElementById("usd-arrow");
+          usdArrowEl.textContent = usdArrow;
+          usdArrowEl.style.color = usdArrow === "▲" ? "green" : "red";
+          lastValues.usd = totalUsd;
+        }
+
+        // Update Gold
         if (!isNaN(goldOunces)) {
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
+          const goldArrow = getArrow(goldOunces, lastValues.gold);
           const goldArrowEl = document.getElementById("gold-arrow");
-          const arrowGold = getArrow(goldOunces, lastValues.gold, goldArrowEl.textContent);
-          goldArrowEl.textContent = arrowGold.symbol;
-          goldArrowEl.style.color = arrowGold.color;
+          goldArrowEl.textContent = goldArrow;
+          goldArrowEl.style.color = goldArrow === "▲" ? "green" : "red";
           lastValues.gold = goldOunces;
         }
 
-        // Silver
+        // Update Silver
         if (!isNaN(silverOunces)) {
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
+          const silverArrow = getArrow(silverOunces, lastValues.silver);
           const silverArrowEl = document.getElementById("silver-arrow");
-          const arrowSilver = getArrow(silverOunces, lastValues.silver, silverArrowEl.textContent);
-          silverArrowEl.textContent = arrowSilver.symbol;
-          silverArrowEl.style.color = arrowSilver.color;
+          silverArrowEl.textContent = silverArrow;
+          silverArrowEl.style.color = silverArrow === "▲" ? "green" : "red";
           lastValues.silver = silverOunces;
-        }
-
-        // USD
-        if (!isNaN(totalUsd)) {
-          document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
-          const usdArrowEl = document.getElementById("usd-arrow");
-          const arrowUsd = getArrow(totalUsd, lastValues.usd, usdArrowEl.textContent);
-          usdArrowEl.textContent = arrowUsd.symbol;
-          usdArrowEl.style.color = arrowUsd.color;
-          lastValues.usd = totalUsd;
         }
 
         const now = new Date();
         document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
-        lastValues.lastUpdated = now.toLocaleTimeString();
       } catch (err) {
         console.error("Update failed:", err);
-        document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
       }
     }
 
