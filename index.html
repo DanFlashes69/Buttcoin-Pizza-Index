@@ -88,9 +88,10 @@
       padding: 20px;
     }
 
+    /* Make images 50% larger (120px x 120px instead of 80px x 80px) */
     .card img {
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       margin-bottom: 10px;
     }
   </style>
@@ -183,7 +184,7 @@
       if (oldVal === null) return { symbol: "▲", color: "green" };
       if (newVal > oldVal) return { symbol: "▲", color: "green" };
       if (newVal < oldVal) return { symbol: "▼", color: "red" };
-      return { symbol: lastArrow, color: lastArrow === "▲" ? "green" : "red" }; // maintain last arrow if no change
+      return { symbol: lastArrow, color: lastArrow === "▲" ? "green" : "red" };
     }
 
     async function updateValues() {
@@ -194,7 +195,6 @@
         const goldOunces = parseFloat(data.buttcoin_gold_oz);
         const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
-        // Update main index
         if (!isNaN(totalUsd)) {
           const arrowIndex = getArrow(totalUsd, lastValues.index, lastValues.lastArrows.index);
           document.getElementById("index").textContent = totalUsd.toFixed(2);
@@ -204,7 +204,6 @@
           lastValues.index = totalUsd;
           lastValues.lastArrows.index = arrowIndex.symbol;
 
-          // USD
           const arrowUsd = getArrow(totalUsd, lastValues.usd, lastValues.lastArrows.usd);
           document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
           const usdArrowEl = document.getElementById("usd-arrow");
@@ -214,7 +213,6 @@
           lastValues.lastArrows.usd = arrowUsd.symbol;
         }
 
-        // Gold
         if (!isNaN(goldOunces)) {
           const arrowGold = getArrow(goldOunces, lastValues.gold, lastValues.lastArrows.gold);
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
@@ -225,7 +223,6 @@
           lastValues.lastArrows.gold = arrowGold.symbol;
         }
 
-        // Silver
         if (!isNaN(silverOunces)) {
           const arrowSilver = getArrow(silverOunces, lastValues.silver, lastValues.lastArrows.silver);
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
