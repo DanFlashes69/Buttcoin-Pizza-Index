@@ -45,7 +45,8 @@
       background: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      /* Increased shadow to stand out more against orange background */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
       text-align: center;
     }
 
@@ -65,10 +66,10 @@
     .movement-arrow {
       margin-left: 5px;
       font-size: 1.1em;
-      padding: 2px 6px;
-      border-radius: 6px; /* rounded arrow background */
-      background-color: rgba(0,0,0,0.05);
-      transition: color 0.3s ease, background-color 0.3s ease;
+      border-radius: 0; /* removed rounded background */
+      padding: 0; /* remove padding */
+      background-color: transparent; /* no shadow/background */
+      transition: color 0.3s ease;
     }
 
     /* Pricing Cards */
@@ -183,12 +184,11 @@
       return res.json();
     }
 
-    function getArrow(newVal, oldVal) {
+    function getArrow(newVal, oldVal, lastSymbol = "▲") {
       if (oldVal === null) return { symbol: "▲", color: "green" };
       if (newVal > oldVal) return { symbol: "▲", color: "green" };
       if (newVal < oldVal) return { symbol: "▼", color: "red" };
-      // if no change, keep previous color/symbol
-      return { symbol: oldValArrow.symbol || "▲", color: oldValArrow.color || "green" };
+      return { symbol: lastSymbol, color: lastSymbol === "▲" ? "green" : "red" };
     }
 
     async function updateValues() {
@@ -203,19 +203,18 @@
         if (!isNaN(totalUsd)) {
           const indexEl = document.getElementById("index");
           indexEl.textContent = totalUsd.toFixed(2);
-          const arrow = getArrow(totalUsd, lastValues.index);
           const arrowEl = document.getElementById("index-arrow");
+          const arrow = getArrow(totalUsd, lastValues.index, arrowEl.textContent);
           arrowEl.textContent = arrow.symbol;
           arrowEl.style.color = arrow.color;
           lastValues.index = totalUsd;
-          lastValues.indexArrow = arrow;
         }
 
         // Gold
         if (!isNaN(goldOunces)) {
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
-          const arrowGold = getArrow(goldOunces, lastValues.gold);
           const goldArrowEl = document.getElementById("gold-arrow");
+          const arrowGold = getArrow(goldOunces, lastValues.gold, goldArrowEl.textContent);
           goldArrowEl.textContent = arrowGold.symbol;
           goldArrowEl.style.color = arrowGold.color;
           lastValues.gold = goldOunces;
@@ -224,8 +223,8 @@
         // Silver
         if (!isNaN(silverOunces)) {
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
-          const arrowSilver = getArrow(silverOunces, lastValues.silver);
           const silverArrowEl = document.getElementById("silver-arrow");
+          const arrowSilver = getArrow(silverOunces, lastValues.silver, silverArrowEl.textContent);
           silverArrowEl.textContent = arrowSilver.symbol;
           silverArrowEl.style.color = arrowSilver.color;
           lastValues.silver = silverOunces;
@@ -234,8 +233,8 @@
         // USD
         if (!isNaN(totalUsd)) {
           document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
-          const arrowUsd = getArrow(totalUsd, lastValues.usd);
           const usdArrowEl = document.getElementById("usd-arrow");
+          const arrowUsd = getArrow(totalUsd, lastValues.usd, usdArrowEl.textContent);
           usdArrowEl.textContent = arrowUsd.symbol;
           usdArrowEl.style.color = arrowUsd.color;
           lastValues.usd = totalUsd;
