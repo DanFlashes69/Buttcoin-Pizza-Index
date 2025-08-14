@@ -1,37 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buttcoin Pizza Index</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     h1 { text-align: center; }
     h2, h3, h4 { margin-top: 20px; }
     .index-value { font-size: 2em; color: red; text-align: center; }
+    img { display: block; margin: 10px auto; max-width: 100%; }
     #last-updated { text-align: center; font-size: 0.9em; color: gray; margin-top: 5px; }
-
-    .value-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-    .value-row p {
-      margin: 0;
-      flex: 1 1 auto;
-    }
-    .value-img {
-      flex: 0 0 auto;
-      width: 60px;
-      height: auto;
-    }
-    .usd-icon {
-      width: 50px;
-      height: auto;
-    }
+    .price { font-weight: bold; color: red; }
   </style>
 </head>
 <body>
@@ -41,39 +21,47 @@
   <div id="last-updated">Last updated: --</div>
 
   <h2>What is the Buttcoin Pizza Index?</h2>
-  <!-- ... existing paragraphs ... -->
+  <p>The Buttcoin Pizza Index is derived from the first documented purchase using Buttcoins, similar to the historic May 18th 2010 Bitcoin transaction when Laszlo Hanyecz made known on a forum at bitcointalk.org that he was willing to buy 2 pizzas for a price of 10,000 Bitcoins. At the time this was worth $41. Four days later on May 22nd the transaction took place. Forum member Jeremy Sturdivant from California took him up on the deal and had two Papa John's pizzas delivered to Laszlo in Florida. This date has become known as Bitcoin Pizza Day. Now we have successfully established Buttcoin pizza day.</p>
+  <p>The index is the value of 10,000 Buttcoins at today's market price. The index illustrates the deflationary properties of Buttcoin.</p>
+  <p>284 days to go till the next Buttcoin Pizza Day on Friday May 22nd 2026!</p>
+  <p>So what are those 10,000 Buttcoins worth in terms of other commodities and currencies....?</p>
 
   <h2>Value of the Buttcoin Pizza in Gold</h2>
-  <div class="value-row">
-    <p>10,000 Buttcoins are now worth <span id="gold-oz">--</span> troy ounces gold.</p>
-    <img
-      class="value-img"
-      src="https://upload.wikimedia.org/wikipedia/commons/a/af/Gold_bullion_bars.jpg"
-      alt="Gold bullion bars"
-    />
-  </div>
+  <p>10,000 Buttcoins are now worth <span id="gold-oz">--</span> troy ounces gold.</p>
 
   <h2>Value of the Buttcoin Pizza in Silver</h2>
-  <div class="value-row">
-    <p>10,000 Buttcoins are now worth <span id="silver-oz">--</span> troy ounces silver.</p>
-    <img
-      class="value-img"
-      src="https://upload.wikimedia.org/wikipedia/commons/c/c1/1000oz.silver.bullion.bar.top.jpg"
-      alt="Silver bullion bar"
-    />
-  </div>
+  <p>10,000 Buttcoins are now worth <span id="silver-oz">--</span> troy ounces silver.</p>
 
   <h2>Value of the Buttcoin Pizza in USD</h2>
-  <div class="value-row">
-    <p>Today, $<span id="usd-value">--</span> can buy you 10,000 Buttcoins.</p>
-    <img
-      class="usd-icon"
-      src="https://upload.wikimedia.org/wikipedia/commons/a/a2/US_Dollar_banknotes.jpg"
-      alt="US dollar banknotes"
-    />
-  </div>
+  <p>Today, $<span id="usd-value">--</span> can buy you 10,000 Buttcoins.</p>
 
-  <!-- ... rest of your content ... -->
+  <h3>How did the first Buttcoin purchase take place?</h3>
+  <p>The images below highlight the actual interaction where supply and demand met, resulting in the first pizza transaction paid with Buttcoin.</p>
+
+  <h4>Buttcoin for Pizza?</h4>
+  <p>Dan makes known he is willing to pay for pizza with Buttcoin. The conditions are quite simple: Pizza in exchange for Buttcoin.</p>
+
+  <h4>Transaction complete!</h4>
+  <p>Dan reports of the successful exchange...</p>
+
+  <h4>The actual pizzas bought with 10,000 Buttcoins!</h4>
+  <p>...and includes a picture of his recent purchase.</p>
+
+  <h4>The transaction for the pizzas in the blockchain:</h4>
+  <!-- Placeholder for any images/blocks -->
+
+  <h3>How to celebrate Buttcoin Pizza Day?</h3>
+  <p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
+
+  <h3>Related questions:</h3>
+  <p><strong>Q: Where can I buy Buttcoin?</strong><br>
+     A: You can buy Buttcoin through various avenues including: Phantom Wallet, Moonshot, MEXC, LBank, Poloniex and more.</p>
+
+  <p><strong>Q: Where can you buy pizzas with Buttcoin?</strong><br>
+     A: Today numerous pizza deliveries offer pizza for Buttcoin; you need only ask!</p>
+
+  <p><strong>Q: Is the Buttcoin Pizza Index on this site realtime?</strong><br>
+     A: The Buttcoin Pizza Index, as well as the values of Gold, Silver and Dollars are updated in real-time.</p>
 
 <script>
 const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
@@ -92,13 +80,14 @@ async function updateValues() {
     const goldOunces = parseFloat(data.buttcoin_gold_oz);
     const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
-    document.getElementById("index").textContent = totalUsd.toFixed(2);
+    // Update all relevant HTML elements
+    document.getElementById("index").textContent = totalUsd.toFixed(2);      // Top index display
     document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
     document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
     document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
 
-    document.getElementById("last-updated").textContent =
-      `Last updated: ${new Date().toLocaleTimeString()}`;
+    const now = new Date();
+    document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
   } catch (err) {
     console.error("Update failed:", err);
     document.getElementById("index").textContent = "--";
@@ -108,6 +97,7 @@ async function updateValues() {
   }
 }
 
+// Initial run + refresh every 60 seconds
 updateValues();
 setInterval(updateValues, 60000);
 </script>
