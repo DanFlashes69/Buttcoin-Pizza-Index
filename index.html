@@ -168,40 +168,67 @@
   </div>
 
   <script>
-  const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
+    const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
 
-  async function fetchJSON(url) {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-    return res.json();
-  }
+    // store last known good values
+    let lastValues = {
+      index: "--",
+      usd: "--",
+      gold: "--",
+      silver: "--",
+      lastUpdated: "--"
+    };
 
-  async function updateValues() {
-    try {
-      const data = await fetchJSON(WORKER_URL);
-
-      const totalUsd = parseFloat(data.buttcoin_usd);
-      const goldOunces = parseFloat(data.buttcoin_gold_oz);
-      const silverOunces = parseFloat(data.buttcoin_silver_oz);
-
-      document.getElementById("index").textContent = totalUsd.toFixed(2);
-      document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
-      document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
-      document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
-
-      const now = new Date();
-      document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
-    } catch (err) {
-      console.error("Update failed:", err);
-      document.getElementById("index").textContent = "--";
-      document.getElementById("usd-value").textContent = "--";
-      document.getElementById("gold-oz").textContent = "--";
-      document.getElementById("silver-oz").textContent = "--";
+    async function fetchJSON(url) {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      return res.json();
     }
-  }
 
-  updateValues();
-  setInterval(updateValues, 60000);
+    async function updateValues() {
+      try {
+        const data = await fetchJSON(WORKER_URL);
+
+        const totalUsd = parseFloat(data.buttcoin_usd);
+        const goldOunces = parseFloat(data.buttcoin_gold_oz);
+        const silverOunces = parseFloat(data.buttcoin_silver_oz);
+
+        // Update only if valid numbers
+        if (!isNaN(totalUsd)) {
+          document.getElementById("index").textContent = totalUsd.toFixed(2);
+          document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
+          lastValues.index = totalUsd.toFixed(2);
+          lastValues.usd = totalUsd.toFixed(2);
+        }
+
+        if (!isNaN(goldOunces)) {
+          document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
+          lastValues.gold = goldOunces.toFixed(5);
+        }
+
+        if (!isNaN(silverOunces)) {
+          document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
+          lastValues.silver = silverOunces.toFixed(5);
+        }
+
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        document.getElementById("last-updated").textContent = `Last updated: ${timeString}`;
+        lastValues.lastUpdated = timeString;
+
+      } catch (err) {
+        console.error("Update failed:", err);
+        // Revert to last known good values
+        document.getElementById("index").textContent = lastValues.index;
+        document.getElementById("usd-value").textContent = lastValues.usd;
+        document.getElementById("gold-oz").textContent = lastValues.gold;
+        document.getElementById("silver-oz").textContent = lastValues.silver;
+        document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
+      }
+    }
+
+    updateValues();
+    setInterval(updateValues, 60000);
   </script>
 </body>
 </html>
