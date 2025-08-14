@@ -12,7 +12,6 @@
       padding-top: 60px;
     }
 
-    /* HEADER STYLING */
     .header {
       position: fixed;
       top: 0;
@@ -38,7 +37,6 @@
       color: #ffcc00;
     }
 
-    /* CONTENT CONTAINER */
     .container {
       max-width: 900px;
       margin: 30px auto;
@@ -64,7 +62,6 @@
     p { line-height: 1.6; color: #333; }
     strong { color: #000; }
 
-    /* Pricing Cards */
     .pricing-cards {
       display: flex;
       justify-content: space-around;
@@ -104,7 +101,6 @@
   </style>
 </head>
 <body>
-  <!-- HEADER LINKS -->
   <div class="header">
     <a href="https://linktr.ee/ButtcoinTNB" target="_blank" rel="noopener noreferrer">Linktree</a>
     <a href="https://x.com/ButtcoinTNB" target="_blank" rel="noopener noreferrer">Twitter/X</a>
@@ -112,85 +108,59 @@
     <a href="https://domchart.onrender.com/" target="_blank" rel="noopener noreferrer">DOM Chart</a>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="container">
     <h1>Buttcoin Pizza Index</h1>
     <p>The Buttcoin Pizza Index is now at</p>
     <div class="index-value">$<span id="index">--</span>!</div>
     <div id="last-updated">Last updated: --</div>
 
-    <h2>What is the Buttcoin Pizza Index?</h2>
-    <p>The Buttcoin Pizza Index is derived from the first documented purchase using Buttcoins, similar to the historic May 18th 2010 Bitcoin transaction when Laszlo Hanyecz made known on a forum at bitcointalk.org that he was willing to buy 2 pizzas for a price of 10,000 Bitcoins. At the time this was worth $41. Four days later on May 22nd the transaction took place. Forum member Jeremy Sturdivant from California took him up on the deal and had two Papa John's pizzas delivered to Laszlo in Florida. This date has become known as Bitcoin Pizza Day. Now we have successfully established Buttcoin pizza day.</p>
-    <p>The index is the value of 10,000 Buttcoins at today's market price. The index illustrates the deflationary properties of Buttcoin.</p>
-    <p>284 days to go till the next Buttcoin Pizza Day on Friday May 22nd 2026!</p>
-    <p>So what are those 10,000 Buttcoins worth in terms of other commodities and currencies....?</p>
-
-    <!-- PRICING SECTION -->
     <h2>Value of the Buttcoin Pizza in Other Assets</h2>
     <div class="pricing-cards">
-
-      <!-- Gold/Buttcoin Card -->
       <div class="card">
-        <img src="gold.png" alt="Gold/Buttcoin">
+        <img id="gold-img" alt="Gold/Buttcoin">
         <div class="price-text"><span id="gold-oz">--</span> oz <span id="gold-arrow" class="movement-arrow">→</span></div>
         <div>Gold / Buttcoin</div>
       </div>
-
-      <!-- Silver/Buttcoin Card -->
       <div class="card">
-        <img src="silver.png" alt="Silver/Buttcoin">
+        <img id="silver-img" alt="Silver/Buttcoin">
         <div class="price-text"><span id="silver-oz">--</span> oz <span id="silver-arrow" class="movement-arrow">→</span></div>
         <div>Silver / Buttcoin</div>
       </div>
-
-      <!-- USD/Buttcoin Card -->
       <div class="card">
-        <img src="usd.png" alt="USD/Buttcoin">
+        <img id="usd-img" alt="USD/Buttcoin">
         <div class="price-text">$<span id="usd-value">--</span> <span id="usd-arrow" class="movement-arrow">→</span></div>
         <div>USD / Buttcoin</div>
       </div>
-
     </div>
-
-    <h3>How did the first Buttcoin purchase take place?</h3>
-    <p>The images below highlight the actual interaction where supply and demand met, resulting in the first pizza transaction paid with Buttcoin.</p>
-
-    <h4>Buttcoin for Pizza?</h4>
-    <p>Dan makes known he is willing to pay for pizza with Buttcoin. The conditions are quite simple: Pizza in exchange for Buttcoin.</p>
-
-    <h4>Transaction complete!</h4>
-    <p>Dan reports of the successful exchange...</p>
-
-    <h4>The actual pizzas bought with 10,000 Buttcoins!</h4>
-    <p>...and includes a picture of his recent purchase.</p>
-
-    <h4>The transaction for the pizzas in the blockchain:</h4>
-
-    <h3>How to celebrate Buttcoin Pizza Day?</h3>
-    <p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
-
-    <h3>Related questions:</h3>
-    <p><strong>Q: Where can I buy Buttcoin?</strong><br>
-       A: You can buy Buttcoin through various avenues including: Phantom Wallet, Moonshot, MEXC, LBank, Poloniex and more.</p>
-
-    <p><strong>Q: Where can you buy pizzas with Buttcoin?</strong><br>
-       A: Today numerous pizza deliveries offer pizza for Buttcoin; you need only ask!</p>
-
-    <p><strong>Q: Is the Buttcoin Pizza Index on this site realtime?</strong><br>
-       A: The Buttcoin Pizza Index, as well as the values of Gold, Silver and Dollars are updated in real-time.</p>
   </div>
 
-  <!-- SCRIPT FOR LIVE UPDATES -->
   <script>
-    const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
+    // Dynamically detect image file with possible capitalization or extension
+    function loadImage(imgElementId, baseName) {
+      const imgElement = document.getElementById(imgElementId);
+      const possibleExts = ['png', 'jpg', 'jpeg', 'gif'];
+      const possibleNames = possibleExts.map(ext => `images/${baseName.toLowerCase()}.${ext}`);
+      for (const path of possibleNames) {
+        fetch(path)
+          .then(res => {
+            if (res.ok) {
+              imgElement.src = path;
+              throw 'done'; // exit loop
+            }
+          })
+          .catch(e => {
+            if (e === 'done') return;
+          });
+      }
+    }
 
-    let lastValues = {
-      index: null,
-      usd: null,
-      gold: null,
-      silver: null,
-      lastUpdated: "--"
-    };
+    loadImage('gold-img', 'gold');
+    loadImage('silver-img', 'silver');
+    loadImage('usd-img', 'usd');
+
+    // ---- Live update script (unchanged) ----
+    const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
+    let lastValues = { index: null, usd: null, gold: null, silver: null, lastUpdated: "--" };
 
     async function fetchJSON(url) {
       const res = await fetch(url, { cache: "no-store" });
@@ -246,7 +216,6 @@
         const timeString = now.toLocaleTimeString();
         document.getElementById("last-updated").textContent = `Last updated: ${timeString}`;
         lastValues.lastUpdated = timeString;
-
       } catch (err) {
         console.error("Update failed:", err);
         document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
