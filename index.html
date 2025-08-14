@@ -60,10 +60,7 @@
 
     #last-updated { font-size: 0.9em; color: gray; margin-top: 5px; }
 
-    .price-text, .index-value .movement-arrow {
-      font-weight: bold;
-      color: red;
-    }
+    .price-text { font-weight: bold; font-size: 1.3em; color: red; }
 
     .movement-arrow {
       margin-left: 5px;
@@ -112,8 +109,7 @@
     <h1>Buttcoin Pizza Index</h1>
     <p>The Buttcoin Pizza Index is now at</p>
     <div class="index-value">
-      $<span id="index">--</span>
-      <span id="index-arrow" class="movement-arrow">→</span>
+      $<span id="index">--</span> <span id="index-arrow" class="movement-arrow">▲</span>
     </div>
     <div id="last-updated">Last updated: --</div>
 
@@ -128,17 +124,17 @@
     <div class="pricing-cards">
       <div class="card">
         <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/gold.png" alt="Gold/Buttcoin">
-        <div class="price-text"><span id="gold-oz">--</span> oz <span id="gold-arrow" class="movement-arrow">→</span></div>
+        <div class="price-text"><span id="gold-oz">--</span> oz <span id="gold-arrow" class="movement-arrow">▲</span></div>
         <div>Gold / Buttcoin</div>
       </div>
       <div class="card">
         <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/silver.png" alt="Silver/Buttcoin">
-        <div class="price-text"><span id="silver-oz">--</span> oz <span id="silver-arrow" class="movement-arrow">→</span></div>
+        <div class="price-text"><span id="silver-oz">--</span> oz <span id="silver-arrow" class="movement-arrow">▲</span></div>
         <div>Silver / Buttcoin</div>
       </div>
       <div class="card">
         <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/usd.png" alt="USD/Buttcoin">
-        <div class="price-text">$<span id="usd-value">--</span> <span id="usd-arrow" class="movement-arrow">→</span></div>
+        <div class="price-text">$<span id="usd-value">--</span> <span id="usd-arrow" class="movement-arrow">▲</span></div>
         <div>USD / Buttcoin</div>
       </div>
     </div>
@@ -175,7 +171,7 @@
   <script>
     const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
 
-    let lastValues = { index: null, usd: null, gold: null, silver: null, lastUpdated: "--" };
+    let lastValues = { index: null, usd: null, gold: null, silver: null, lastArrows: {index:"▲", usd:"▲", gold:"▲", silver:"▲"}, lastUpdated: "--" };
 
     async function fetchJSON(url) {
       const res = await fetch(url, { cache: "no-store" });
@@ -184,70 +180,66 @@
     }
 
     function getArrow(newVal, oldVal, lastArrow) {
-      if (oldVal === null) return { symbol: "→", color: "gray" };
+      if (oldVal === null) return { symbol: "▲", color: "green" };
       if (newVal > oldVal) return { symbol: "▲", color: "green" };
       if (newVal < oldVal) return { symbol: "▼", color: "red" };
-      // Maintain last arrow if no change
-      return lastArrow;
+      return { symbol: lastArrow, color: lastArrow === "▲" ? "green" : "red" }; // maintain last arrow if no change
     }
 
     async function updateValues() {
       try {
         const data = await fetchJSON(WORKER_URL);
+
         const totalUsd = parseFloat(data.buttcoin_usd);
         const goldOunces = parseFloat(data.buttcoin_gold_oz);
         const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
+        // Update main index
         if (!isNaN(totalUsd)) {
+          const arrowIndex = getArrow(totalUsd, lastValues.index, lastValues.lastArrows.index);
           document.getElementById("index").textContent = totalUsd.toFixed(2);
           const indexArrowEl = document.getElementById("index-arrow");
-          const arrowIndex = getArrow(totalUsd, lastValues.index, {
-            symbol: indexArrowEl.textContent,
-            color: indexArrowEl.style.color
-          });
           indexArrowEl.textContent = arrowIndex.symbol;
           indexArrowEl.style.color = arrowIndex.color;
+          lastValues.index = totalUsd;
+          lastValues.lastArrows.index = arrowIndex.symbol;
 
+          // USD
+          const arrowUsd = getArrow(totalUsd, lastValues.usd, lastValues.lastArrows.usd);
           document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
           const usdArrowEl = document.getElementById("usd-arrow");
-          const arrowUsd = getArrow(totalUsd, lastValues.usd, {
-            symbol: usdArrowEl.textContent,
-            color: usdArrowEl.style.color
-          });
           usdArrowEl.textContent = arrowUsd.symbol;
           usdArrowEl.style.color = arrowUsd.color;
-
           lastValues.usd = totalUsd;
-          lastValues.index = totalUsd;
+          lastValues.lastArrows.usd = arrowUsd.symbol;
         }
 
+        // Gold
         if (!isNaN(goldOunces)) {
+          const arrowGold = getArrow(goldOunces, lastValues.gold, lastValues.lastArrows.gold);
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
           const goldArrowEl = document.getElementById("gold-arrow");
-          const arrowGold = getArrow(goldOunces, lastValues.gold, {
-            symbol: goldArrowEl.textContent,
-            color: goldArrowEl.style.color
-          });
           goldArrowEl.textContent = arrowGold.symbol;
           goldArrowEl.style.color = arrowGold.color;
           lastValues.gold = goldOunces;
+          lastValues.lastArrows.gold = arrowGold.symbol;
         }
 
+        // Silver
         if (!isNaN(silverOunces)) {
+          const arrowSilver = getArrow(silverOunces, lastValues.silver, lastValues.lastArrows.silver);
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
           const silverArrowEl = document.getElementById("silver-arrow");
-          const arrowSilver = getArrow(silverOunces, lastValues.silver, {
-            symbol: silverArrowEl.textContent,
-            color: silverArrowEl.style.color
-          });
           silverArrowEl.textContent = arrowSilver.symbol;
           silverArrowEl.style.color = arrowSilver.color;
           lastValues.silver = silverOunces;
+          lastValues.lastArrows.silver = arrowSilver.symbol;
         }
 
         const now = new Date();
         document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
         lastValues.lastUpdated = now.toLocaleTimeString();
+
       } catch (err) {
         console.error("Update failed:", err);
         document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
