@@ -49,63 +49,20 @@
       text-align: center;
     }
 
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      color: #222;
-    }
+    h1 { font-size: 2.5em; margin-bottom: 10px; color: #222; }
+    h2 { margin-top: 30px; font-size: 1.6em; color: #444; }
+    h3 { margin-top: 25px; font-size: 1.3em; color: #555; }
+    h4 { margin-top: 20px; font-size: 1.1em; color: #666; }
 
-    h2 {
-      margin-top: 30px;
-      font-size: 1.6em;
-      color: #444;
-    }
+    .index-value { font-size: 2.2em; font-weight: bold; color: red; margin: 10px 0; }
 
-    h3 {
-      margin-top: 25px;
-      font-size: 1.3em;
-      color: #555;
-    }
+    img { display: block; margin: 15px auto; max-width: 100%; border-radius: 8px; }
 
-    h4 {
-      margin-top: 20px;
-      font-size: 1.1em;
-      color: #666;
-    }
+    #last-updated { font-size: 0.9em; color: gray; margin-top: 5px; }
 
-    .index-value {
-      font-size: 2.2em;
-      font-weight: bold;
-      color: red;
-      margin: 10px 0;
-    }
-
-    img {
-      display: block;
-      margin: 15px auto;
-      max-width: 100%;
-      border-radius: 8px;
-    }
-
-    #last-updated {
-      font-size: 0.9em;
-      color: gray;
-      margin-top: 5px;
-    }
-
-    .price {
-      font-weight: bold;
-      color: red;
-    }
-
-    p {
-      line-height: 1.6;
-      color: #333;
-    }
-
-    strong {
-      color: #000;
-    }
+    .price { font-weight: bold; color: red; }
+    p { line-height: 1.6; color: #333; }
+    strong { color: #000; }
 
     /* Pricing Cards */
     .pricing-cards {
@@ -141,16 +98,17 @@
 
     .movement-arrow {
       margin-left: 5px;
+      font-size: 1.1em;
     }
   </style>
 </head>
 <body>
   <!-- HEADER LINKS -->
   <div class="header">
-    <a href="https://linktr.ee/ButtcoinTNB" target="_blank">Linktree</a>
-    <a href="https://x.com/ButtcoinTNB" target="_blank">Twitter/X</a>
-    <a href="https://t.me/buttcointnbsol" target="_blank">Telegram</a>
-    <a href="https://domchart.onrender.com/" target="_blank">DOM Chart</a>
+    <a href="https://linktr.ee/ButtcoinTNB" target="_blank" rel="noopener noreferrer">Linktree</a>
+    <a href="https://x.com/ButtcoinTNB" target="_blank" rel="noopener noreferrer">Twitter/X</a>
+    <a href="https://t.me/buttcointnbsol" target="_blank" rel="noopener noreferrer">Telegram</a>
+    <a href="https://domchart.onrender.com/" target="_blank" rel="noopener noreferrer">DOM Chart</a>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -172,22 +130,22 @@
 
       <!-- Gold/Buttcoin Card -->
       <div class="card">
-        <img src="/images/gold-buttcoin.png" alt="Gold/Buttcoin">
-        <div class="price-text"><span id="gold-oz">--</span> oz <span class="movement-arrow">▲</span></div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABFklEQVR4nO3XsQ2AIBAEQXbY/39vQgUJqEXe3JbfMJIiCAAAAAAAAAAAAwH+AoT9a0Vqj5TqW+bI72l9t1w6yUOmHda3+dqNf07w1eyqAAAAAAAAAAD+J1g7Q2t6T0y1zJ+fC0VrruzL0zWrQAAAAAAAAAAAD8JvAT2k0iPXl7G3Tkth0pXlL/1Z8qAAAAAAAAAAAAN+0k57brXc9GbrC7kzzXjVfMvQAAAAAAAAAAAL9KDH+AAAAAAAAAAAACAN9S+T5AF5a4hHQQAAAABJRU5ErkJggg==" alt="Gold/Buttcoin">
+        <div class="price-text"><span id="gold-oz">--</span> oz <span id="gold-arrow" class="movement-arrow">▲</span></div>
         <div>Gold / Buttcoin</div>
       </div>
 
       <!-- Silver/Buttcoin Card -->
       <div class="card">
-        <img src="/images/silver-buttcoin.png" alt="Silver/Buttcoin">
-        <div class="price-text"><span id="silver-oz">--</span> oz <span class="movement-arrow">▲</span></div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABHklEQVR4nO3XMQ6AIBAEQXbQ/7+v8iYah+OaXqWu6nZIgIAAAAAAAAAACgJ8DDnOq3b1c3Xx6R+1w7xUuk6j6/tvfV7k+AAAAgD4R2B1wCddkI/3v8v3NWrqD3vP4D5vbGAAAAAAAAAAD8x/AXAAAAAAAAAAAAPxz+J1gG72jRZ9v61y/4AAAAAAAAAAAD8x/AT3uQO/09VdlZ36O92X9rAAAAAAAAAAAAfGvJ8B7C9jUuc5u6LwAAAABJRU5ErkJggg==" alt="Silver/Buttcoin">
+        <div class="price-text"><span id="silver-oz">--</span> oz <span id="silver-arrow" class="movement-arrow">▲</span></div>
         <div>Silver / Buttcoin</div>
       </div>
 
       <!-- USD/Buttcoin Card -->
       <div class="card">
-        <img src="/images/usd-buttcoin.png" alt="USD/Buttcoin">
-        <div class="price-text">$<span id="usd-value">--</span> <span class="movement-arrow">▲</span></div>
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGklEQVR4nO3WwQ2AIBAEQXfQ/79+v4S4r+S5dYLV2kr0YAIAAAAAAAAAAAAgL8G4r9YlF4p0hXqX+M7Y1rAAAAAAAAAAAAgJ+v4I0uX9s+0++3N9oIAAAAAAAAAgN8yfANsTnA9l6g9Px2w6W2v4AAAAAAAAAAAD+F/DfAAAAAAAr+VY9oYffg3gAAAABJRU5ErkJggg==" alt="USD/Buttcoin">
+        <div class="price-text">$<span id="usd-value">--</span> <span id="usd-arrow" class="movement-arrow">▲</span></div>
         <div>USD / Buttcoin</div>
       </div>
 
@@ -225,12 +183,11 @@
   <script>
     const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
 
-    // store last known good values
     let lastValues = {
-      index: "--",
-      usd: "--",
-      gold: "--",
-      silver: "--",
+      index: null,
+      usd: null,
+      gold: null,
+      silver: null,
       lastUpdated: "--"
     };
 
@@ -238,6 +195,11 @@
       const res = await fetch(url, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       return res.json();
+    }
+
+    function getArrow(newVal, oldVal) {
+      if (oldVal === null) return "▲";
+      return newVal > oldVal ? "▲" : newVal < oldVal ? "▼" : "→";
     }
 
     async function updateValues() {
@@ -248,22 +210,24 @@
         const goldOunces = parseFloat(data.buttcoin_gold_oz);
         const silverOunces = parseFloat(data.buttcoin_silver_oz);
 
-        // Update only if valid numbers
         if (!isNaN(totalUsd)) {
           document.getElementById("index").textContent = totalUsd.toFixed(2);
           document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
-          lastValues.index = totalUsd.toFixed(2);
-          lastValues.usd = totalUsd.toFixed(2);
+          document.getElementById("usd-arrow").textContent = getArrow(totalUsd, lastValues.usd);
+          lastValues.usd = totalUsd;
+          lastValues.index = totalUsd;
         }
 
         if (!isNaN(goldOunces)) {
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
-          lastValues.gold = goldOunces.toFixed(5);
+          document.getElementById("gold-arrow").textContent = getArrow(goldOunces, lastValues.gold);
+          lastValues.gold = goldOunces;
         }
 
         if (!isNaN(silverOunces)) {
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
-          lastValues.silver = silverOunces.toFixed(5);
+          document.getElementById("silver-arrow").textContent = getArrow(silverOunces, lastValues.silver);
+          lastValues.silver = silverOunces;
         }
 
         const now = new Date();
@@ -273,11 +237,6 @@
 
       } catch (err) {
         console.error("Update failed:", err);
-        // Revert to last known good values
-        document.getElementById("index").textContent = lastValues.index;
-        document.getElementById("usd-value").textContent = lastValues.usd;
-        document.getElementById("gold-oz").textContent = lastValues.gold;
-        document.getElementById("silver-oz").textContent = lastValues.silver;
         document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
       }
     }
