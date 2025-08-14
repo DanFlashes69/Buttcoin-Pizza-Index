@@ -128,28 +128,21 @@
     <!-- PRICING SECTION -->
     <h2>Value of the Buttcoin Pizza in Other Assets</h2>
     <div class="pricing-cards">
-
-      <!-- Gold/Buttcoin Card -->
       <div class="card">
-        <img src="gold.png" alt="Gold/Buttcoin">
+        <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/gold.png" alt="Gold/Buttcoin">
         <div class="price-text"><span id="gold-oz">--</span> oz <span id="gold-arrow" class="movement-arrow">→</span></div>
         <div>Gold / Buttcoin</div>
       </div>
-
-      <!-- Silver/Buttcoin Card -->
       <div class="card">
-        <img src="silver.png" alt="Silver/Buttcoin">
+        <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/silver.png" alt="Silver/Buttcoin">
         <div class="price-text"><span id="silver-oz">--</span> oz <span id="silver-arrow" class="movement-arrow">→</span></div>
         <div>Silver / Buttcoin</div>
       </div>
-
-      <!-- USD/Buttcoin Card -->
       <div class="card">
-        <img src="usd.png" alt="USD/Buttcoin">
+        <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/usd.png" alt="USD/Buttcoin">
         <div class="price-text">$<span id="usd-value">--</span> <span id="usd-arrow" class="movement-arrow">→</span></div>
         <div>USD / Buttcoin</div>
       </div>
-
     </div>
 
     <h3>How did the first Buttcoin purchase take place?</h3>
@@ -167,7 +160,7 @@
     <h4>The transaction for the pizzas in the blockchain:</h4>
 
     <h3>How to celebrate Buttcoin Pizza Day?</h3>
-    <p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
+    <p>As a yearly celebration of the first moment in history that a purchase was made using Buttcoin it is customary to: eat pizza! This happens on the 22nd of May, the date that the first thing (pizza) was bought using Buttcoin. It does not matter if it is just a slice, or a whole pizza, or more. If it is homemade, store-bought, or delivered. Keeping to the original concept, die-hard enthusiasts will make sure that the pizza is paid for with Buttcoin.</p>
 
     <h3>Related questions:</h3>
     <p><strong>Q: Where can I buy Buttcoin?</strong><br>
@@ -184,13 +177,7 @@
   <script>
     const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
 
-    let lastValues = {
-      index: null,
-      usd: null,
-      gold: null,
-      silver: null,
-      lastUpdated: "--"
-    };
+    let lastValues = { index: null, usd: null, gold: null, silver: null, lastUpdated: "--" };
 
     async function fetchJSON(url) {
       const res = await fetch(url, { cache: "no-store" });
@@ -199,7 +186,7 @@
     }
 
     function getArrow(newVal, oldVal) {
-      if (oldVal === null) return { symbol: "▲", color: "green" };
+      if (oldVal === null) return { symbol: "→", color: "gray" };
       if (newVal > oldVal) return { symbol: "▲", color: "green" };
       if (newVal < oldVal) return { symbol: "▼", color: "red" };
       return { symbol: "→", color: "gray" };
@@ -208,7 +195,6 @@
     async function updateValues() {
       try {
         const data = await fetchJSON(WORKER_URL);
-
         const totalUsd = parseFloat(data.buttcoin_usd);
         const goldOunces = parseFloat(data.buttcoin_gold_oz);
         const silverOunces = parseFloat(data.buttcoin_silver_oz);
@@ -243,10 +229,8 @@
         }
 
         const now = new Date();
-        const timeString = now.toLocaleTimeString();
-        document.getElementById("last-updated").textContent = `Last updated: ${timeString}`;
-        lastValues.lastUpdated = timeString;
-
+        document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
+        lastValues.lastUpdated = now.toLocaleTimeString();
       } catch (err) {
         console.error("Update failed:", err);
         document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
