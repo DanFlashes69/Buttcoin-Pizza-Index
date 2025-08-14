@@ -174,4 +174,87 @@
        A: You can buy Buttcoin through various avenues including: Phantom Wallet, Moonshot, MEXC, LBank, Poloniex and more.</p>
 
     <p><strong>Q: Where can you buy pizzas with Buttcoin?</strong><br>
-       A: Today numerous pizza deliveries offer pizza fo
+       A: Today numerous pizza deliveries offer pizza for Buttcoin; you need only ask!</p>
+
+    <p><strong>Q: Is the Buttcoin Pizza Index on this site realtime?</strong><br>
+       A: The Buttcoin Pizza Index, as well as the values of Gold, Silver and Dollars are updated in real-time.</p>
+  </div>
+
+  <!-- SCRIPT FOR LIVE UPDATES -->
+  <script>
+    const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
+
+    let lastValues = {
+      index: null,
+      usd: null,
+      gold: null,
+      silver: null,
+      lastUpdated: "--"
+    };
+
+    async function fetchJSON(url) {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      return res.json();
+    }
+
+    function getArrow(newVal, oldVal) {
+      if (oldVal === null) return { symbol: "▲", color: "green" };
+      if (newVal > oldVal) return { symbol: "▲", color: "green" };
+      if (newVal < oldVal) return { symbol: "▼", color: "red" };
+      return { symbol: "→", color: "gray" };
+    }
+
+    async function updateValues() {
+      try {
+        const data = await fetchJSON(WORKER_URL);
+
+        const totalUsd = parseFloat(data.buttcoin_usd);
+        const goldOunces = parseFloat(data.buttcoin_gold_oz);
+        const silverOunces = parseFloat(data.buttcoin_silver_oz);
+
+        if (!isNaN(totalUsd)) {
+          document.getElementById("index").textContent = totalUsd.toFixed(2);
+          document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
+          const arrowUsd = getArrow(totalUsd, lastValues.usd);
+          const usdArrowEl = document.getElementById("usd-arrow");
+          usdArrowEl.textContent = arrowUsd.symbol;
+          usdArrowEl.style.color = arrowUsd.color;
+          lastValues.usd = totalUsd;
+          lastValues.index = totalUsd;
+        }
+
+        if (!isNaN(goldOunces)) {
+          document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
+          const arrowGold = getArrow(goldOunces, lastValues.gold);
+          const goldArrowEl = document.getElementById("gold-arrow");
+          goldArrowEl.textContent = arrowGold.symbol;
+          goldArrowEl.style.color = arrowGold.color;
+          lastValues.gold = goldOunces;
+        }
+
+        if (!isNaN(silverOunces)) {
+          document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
+          const arrowSilver = getArrow(silverOunces, lastValues.silver);
+          const silverArrowEl = document.getElementById("silver-arrow");
+          silverArrowEl.textContent = arrowSilver.symbol;
+          silverArrowEl.style.color = arrowSilver.color;
+          lastValues.silver = silverOunces;
+        }
+
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        document.getElementById("last-updated").textContent = `Last updated: ${timeString}`;
+        lastValues.lastUpdated = timeString;
+
+      } catch (err) {
+        console.error("Update failed:", err);
+        document.getElementById("last-updated").textContent = `Last updated: ${lastValues.lastUpdated} (update failed)`;
+      }
+    }
+
+    updateValues();
+    setInterval(updateValues, 60000);
+  </script>
+</body>
+</html>
