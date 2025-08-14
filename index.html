@@ -113,7 +113,7 @@
     <p>The Buttcoin Pizza Index is now at</p>
     <div class="index-value">
       $<span id="index">--</span>
-      <span id="index-arrow" class="movement-arrow">→</span>!
+      <span id="index-arrow" class="movement-arrow">→</span>
     </div>
     <div id="last-updated">Last updated: --</div>
 
@@ -183,11 +183,12 @@
       return res.json();
     }
 
-    function getArrow(newVal, oldVal) {
+    function getArrow(newVal, oldVal, lastArrow) {
       if (oldVal === null) return { symbol: "→", color: "gray" };
       if (newVal > oldVal) return { symbol: "▲", color: "green" };
       if (newVal < oldVal) return { symbol: "▼", color: "red" };
-      return { symbol: "→", color: "gray" };
+      // Maintain last arrow if no change
+      return lastArrow;
     }
 
     async function updateValues() {
@@ -199,14 +200,20 @@
 
         if (!isNaN(totalUsd)) {
           document.getElementById("index").textContent = totalUsd.toFixed(2);
-          const arrowIndex = getArrow(totalUsd, lastValues.index);
           const indexArrowEl = document.getElementById("index-arrow");
+          const arrowIndex = getArrow(totalUsd, lastValues.index, {
+            symbol: indexArrowEl.textContent,
+            color: indexArrowEl.style.color
+          });
           indexArrowEl.textContent = arrowIndex.symbol;
           indexArrowEl.style.color = arrowIndex.color;
 
           document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
-          const arrowUsd = getArrow(totalUsd, lastValues.usd);
           const usdArrowEl = document.getElementById("usd-arrow");
+          const arrowUsd = getArrow(totalUsd, lastValues.usd, {
+            symbol: usdArrowEl.textContent,
+            color: usdArrowEl.style.color
+          });
           usdArrowEl.textContent = arrowUsd.symbol;
           usdArrowEl.style.color = arrowUsd.color;
 
@@ -216,8 +223,11 @@
 
         if (!isNaN(goldOunces)) {
           document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
-          const arrowGold = getArrow(goldOunces, lastValues.gold);
           const goldArrowEl = document.getElementById("gold-arrow");
+          const arrowGold = getArrow(goldOunces, lastValues.gold, {
+            symbol: goldArrowEl.textContent,
+            color: goldArrowEl.style.color
+          });
           goldArrowEl.textContent = arrowGold.symbol;
           goldArrowEl.style.color = arrowGold.color;
           lastValues.gold = goldOunces;
@@ -225,8 +235,11 @@
 
         if (!isNaN(silverOunces)) {
           document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
-          const arrowSilver = getArrow(silverOunces, lastValues.silver);
           const silverArrowEl = document.getElementById("silver-arrow");
+          const arrowSilver = getArrow(silverOunces, lastValues.silver, {
+            symbol: silverArrowEl.textContent,
+            color: silverArrowEl.style.color
+          });
           silverArrowEl.textContent = arrowSilver.symbol;
           silverArrowEl.style.color = arrowSilver.color;
           lastValues.silver = silverOunces;
