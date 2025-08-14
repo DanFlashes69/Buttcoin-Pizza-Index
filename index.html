@@ -43,7 +43,7 @@
       background: white;
       padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
       text-align: center;
     }
 
@@ -206,10 +206,10 @@
     }
 
     function updateCountdown() {
-      const today = new Date();
-      const nextYear = today.getFullYear() + 1;
-      const nextPizzaDay = new Date(nextYear, today.getMonth(), today.getDate()); // today next year
-      const diffTime = nextPizzaDay - today;
+      const now = new Date();
+      let nextPizzaDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      if (now >= nextPizzaDay) nextPizzaDay.setFullYear(nextPizzaDay.getFullYear() + 1);
+      const diffTime = nextPizzaDay - now;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const options = { month: 'long', day: 'numeric', year: 'numeric' };
       document.getElementById("pizza-countdown").innerHTML = `<strong>${diffDays} days to go until the next Buttcoin Pizza Day on ${nextPizzaDay.toLocaleDateString(undefined, options)}!</strong>`;
@@ -218,7 +218,7 @@
     updateValues();
     updateCountdown();
     setInterval(updateValues, 60000);
-    setInterval(updateCountdown, 86400000); // daily update
+    setInterval(updateCountdown, 1000); // update countdown every second
   </script>
 </body>
 </html>
