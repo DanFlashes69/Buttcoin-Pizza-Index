@@ -117,7 +117,7 @@
     }
 
     .image-row img {
-      width: 50%; /* slightly wider than before */
+      width: 50%;
       max-width: 450px;
       height: auto;
       border-radius: 8px;
@@ -125,13 +125,13 @@
 
     /* Enlarged banned image */
     .banned-image {
-      height: 175%; /* 75% taller than original */
+      height: 175%;
       width: auto;
     }
 
     @media (max-width: 950px) {
       .image-row {
-        flex-direction: column; /* stack for smaller screens */
+        flex-direction: column;
       }
       .image-row img {
         width: 90%;
@@ -310,11 +310,15 @@
 
     function updateCountdown() {
       const now = new Date();
-      let nextPizzaDay = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+      let nextPizzaDay = new Date(now.getFullYear(), 7, 14); // August 14 (month is zero-based)
+      if (now > nextPizzaDay) {
+        nextPizzaDay = new Date(now.getFullYear() + 1, 7, 14);
+      }
       const diffTime = nextPizzaDay - now;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const options = { month: 'long', day: 'numeric', year: 'numeric' };
-      document.getElementById("pizza-countdown").innerHTML = `<strong>${diffDays} days to go until the next Buttcoin Pizza Day on ${nextPizzaDay.toLocaleDateString(undefined, options)}!</strong>`;
+      document.getElementById("pizza-countdown").innerHTML = 
+        `<strong>${diffDays} days to go until the next Buttcoin Pizza Day on ${nextPizzaDay.toLocaleDateString(undefined, options)}!</strong>`;
     }
 
     updateValues();
@@ -324,8 +328,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
