@@ -117,7 +117,7 @@
     }
 
     .image-row img {
-      width: 50%;
+      width: 50%; /* slightly wider than before */
       max-width: 450px;
       height: auto;
       border-radius: 8px;
@@ -125,13 +125,13 @@
 
     /* Enlarged banned image */
     .banned-image {
-      height: 175%;
+      height: 175%; /* 75% taller than original */
       width: auto;
     }
 
     @media (max-width: 950px) {
       .image-row {
-        flex-direction: column;
+        flex-direction: column; /* stack for smaller screens */
       }
       .image-row img {
         width: 90%;
@@ -167,7 +167,7 @@
   <div class="container">
     <h1>Buttcoin Pizza Index</h1>
     <p>The Buttcoin Pizza Index is now at</p>
-    <div class="index-value">$<span id="index">--</span> <span id="index-arrow" class="movement-arrow">▲</span></div>
+    <div class="index-value">$<span id="index">Loading...</span> <span id="index-arrow" class="movement-arrow">▲</span></div>
     <div id="last-updated">Last updated: --</div>
 
     <h2>What is the Buttcoin Pizza Index?</h2>
@@ -184,17 +184,17 @@
     <div class="pricing-cards">
       <div class="card">
         <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/gold.png" alt="Gold/Buttcoin">
-        <div class="price-text"><span id="gold-oz">--</span> oz <span id="gold-arrow" class="movement-arrow">▲</span></div>
+        <div class="price-text"><span id="gold-oz">Loading...</span> oz <span id="gold-arrow" class="movement-arrow">▲</span></div>
         <div>Gold / Buttcoin</div>
       </div>
       <div class="card">
         <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/silver.png" alt="Silver/Buttcoin">
-        <div class="price-text"><span id="silver-oz">--</span> oz <span id="silver-arrow" class="movement-arrow">▲</span></div>
+        <div class="price-text"><span id="silver-oz">Loading...</span> oz <span id="silver-arrow" class="movement-arrow">▲</span></div>
         <div>Silver / Buttcoin</div>
       </div>
       <div class="card">
         <img src="https://raw.githubusercontent.com/DanFlashes69/Buttcoin-Pizza-Index/main/usd.png" alt="USD/Buttcoin">
-        <div class="price-text">$<span id="usd-value">--</span> <span id="usd-arrow" class="movement-arrow">▲</span></div>
+        <div class="price-text">$<span id="usd-value">Loading...</span> <span id="usd-arrow" class="movement-arrow">▲</span></div>
         <div>USD / Buttcoin</div>
       </div>
     </div>
@@ -248,6 +248,7 @@
   <!-- SCRIPT FOR LIVE UPDATES -->
   <script>
     const WORKER_URL = "https://buttcoinpizzaindex.tannerperry234.workers.dev/buttcoin-data";
+    const STORAGE_KEY = "buttcoin_last_values_v1";
     let lastValues = { index: null, usd: null, gold: null, silver: null };
 
     async function fetchJSON(url) {
@@ -261,68 +262,122 @@
       return newVal > oldVal ? "▲" : "▼";
     }
 
+    function loadFromCacheAndApply() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const cached = JSON.parse(raw) || {};
+        const maybeNum = v => (v === null || v === undefined || isNaN(parseFloat(v))) ? null : parseFloat(v);
+
+        lastValues.index = maybeNum(cached.index);
+        lastValues.usd   = maybeNum(cached.usd);
+        lastValues.gold  = maybeNum(cached.gold);
+        lastValues.silver= maybeNum(cached.silver);
+
+        // Apply immediately to DOM so we never show "--"
+        if (lastValues.index !== null) {
+          document.getElementById("index").textContent = lastValues.index.toFixed(2);
+          document.getElementById("usd-value").textContent = lastValues.index.toFixed(2);
+        }
+        if (lastValues.gold !== null) {
+          document.getElementById("gold-oz").textContent = lastValues.gold.toFixed(5);
+        }
+        if (lastValues.silver !== null) {
+          document.getElementById("silver-oz").textContent = lastValues.silver.toFixed(5);
+        }
+        if (cached.timestamp) {
+          const ts = new Date(cached.timestamp);
+          if (!isNaN(ts.getTime())) {
+            document.getElementById("last-updated").textContent = `Last updated: ${ts.toLocaleTimeString()}`;
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to load cache:", e);
+      }
+    }
+
+    function saveToCache() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          ...lastValues,
+          timestamp: Date.now()
+        }));
+      } catch (e) {
+        console.warn("Failed to save cache:", e);
+      }
+    }
+
     async function updateValues() {
       try {
         const data = await fetchJSON(WORKER_URL);
-        const totalUsd = parseFloat(data.buttcoin_usd);
-        const goldOunces = parseFloat(data.buttcoin_gold_oz);
-        const silverOunces = parseFloat(data.buttcoin_silver_oz);
+        const totalUsd    = parseFloat(data.buttcoin_usd);
+        const goldOunces  = parseFloat(data.buttcoin_gold_oz);
+        const silverOunces= parseFloat(data.buttcoin_silver_oz);
 
+        // Only update if valid numbers; arrows compare vs previous lastValues
         if (!isNaN(totalUsd)) {
-          document.getElementById("index").textContent = totalUsd.toFixed(2);
           const indexArrow = getArrow(totalUsd, lastValues.index);
-          document.getElementById("index-arrow").textContent = indexArrow;
-          document.getElementById("index-arrow").style.color = indexArrow === "▲" ? "green" : "red";
-          lastValues.index = totalUsd;
-
+          document.getElementById("index").textContent = totalUsd.toFixed(2);
+          const indexArrowEl = document.getElementById("index-arrow");
+          indexArrowEl.textContent = indexArrow;
+          indexArrowEl.style.color = indexArrow === "▲" ? "green" : "red";
           document.getElementById("usd-value").textContent = totalUsd.toFixed(2);
-          const usdArrow = getArrow(totalUsd, lastValues.usd);
-          const usdArrowEl = document.getElementById("usd-arrow");
-          usdArrowEl.textContent = usdArrow;
-          usdArrowEl.style.color = usdArrow === "▲" ? "green" : "red";
-          lastValues.usd = totalUsd;
+
+          lastValues.index = totalUsd;
+          lastValues.usd   = totalUsd;
         }
 
         if (!isNaN(goldOunces)) {
-          document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
           const goldArrow = getArrow(goldOunces, lastValues.gold);
+          document.getElementById("gold-oz").textContent = goldOunces.toFixed(5);
           const goldArrowEl = document.getElementById("gold-arrow");
           goldArrowEl.textContent = goldArrow;
           goldArrowEl.style.color = goldArrow === "▲" ? "green" : "red";
+
           lastValues.gold = goldOunces;
         }
 
         if (!isNaN(silverOunces)) {
-          document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
           const silverArrow = getArrow(silverOunces, lastValues.silver);
+          document.getElementById("silver-oz").textContent = silverOunces.toFixed(5);
           const silverArrowEl = document.getElementById("silver-arrow");
           silverArrowEl.textContent = silverArrow;
           silverArrowEl.style.color = silverArrow === "▲" ? "green" : "red";
+
           lastValues.silver = silverOunces;
         }
 
-        const now = new Date();
-        document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
+        // If at least one value updated successfully, save & stamp time
+        if (!isNaN(totalUsd) || !isNaN(goldOunces) || !isNaN(silverOunces)) {
+          saveToCache();
+          const now = new Date();
+          document.getElementById("last-updated").textContent = `Last updated: ${now.toLocaleTimeString()}`;
+        }
       } catch (err) {
+        // On any error, we simply keep showing whatever is already on screen / cache
         console.error("Update failed:", err);
       }
     }
 
     function updateCountdown() {
       const now = new Date();
-      let nextPizzaDay = new Date(now.getFullYear(), 7, 14); // August 14 (month is zero-based)
+      let nextPizzaDay = new Date(now.getFullYear(), 7, 14); // August 14 (zero-based month)
       if (now > nextPizzaDay) {
         nextPizzaDay = new Date(now.getFullYear() + 1, 7, 14);
       }
       const diffTime = nextPizzaDay - now;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const options = { month: 'long', day: 'numeric', year: 'numeric' };
-      document.getElementById("pizza-countdown").innerHTML = 
+      document.getElementById("pizza-countdown").innerHTML =
         `<strong>${diffDays} days to go until the next Buttcoin Pizza Day on ${nextPizzaDay.toLocaleDateString(undefined, options)}!</strong>`;
     }
 
+    // Boot sequence: load cached values (if any), then fetch fresh ASAP
+    loadFromCacheAndApply();
     updateValues();
     updateCountdown();
+
+    // Refresh every 60 seconds; countdown every second
     setInterval(updateValues, 60000);
     setInterval(updateCountdown, 1000);
   </script>
